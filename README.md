@@ -83,3 +83,5 @@ To play with friends on mobile, host it for free on GitHub Pages or Netlify.
 🛡️ License
 
 Distributed under the MIT License. Feel free to modify, expand the lore, and share it with the community of hunters and ashen ones!# BrowserGuessSouls
+
+Play now [BrowserGuessSouls](https://tmpfernando.github.io/BrowserGuessSouls/)
