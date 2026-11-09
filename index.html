@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0d0d0d">
+<title>Souls Guess EN</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--card-bg:#141414;--border:#3a2e25;--gold:#c5a880;--gold-glow:#f3e5ab;--blood:#8a1c1c;--blood-bright:#d32f2f;--text:#e0dcd0;--muted:#8c857b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--text);background:var(--bg);touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.hidden{display:none!important}
+button{font:inherit;cursor:pointer}
+
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;overflow:hidden;
+ padding:max(12px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
+
+/* Estética Souls Dark */
+.bg-souls{background:radial-gradient(circle at center, #1c1815 0%, #080706 100%)}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.7)}
+.btn{border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Cinzel',serif;font-weight:700;background:#1a1715;box-shadow:0 4px 10px rgba(0,0,0,.5);transition:all .15s}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 4px rgba(0,0,0,.5)}
+
+.play{width:100%;padding:14px;font-size:1.15rem;font-family:'Cinzel',serif;letter-spacing:1px;background:linear-gradient(135deg,#3a0e0e 0%,#1f0808 100%);border-color:var(--blood);color:var(--gold-glow);display:flex;align-items:center;justify-content:center;gap:10px;animation:breathe 3s ease-in-out infinite}
+@keyframes breathe{50%{border-color:var(--blood-bright);box-shadow:0 0 15px rgba(211,47,47,.4)}}
+
+.logo{display:inline-grid;place-items:center;width:48px;height:48px;border-radius:12px;background:#141414;border:1px solid var(--gold);font-size:1.4rem;color:var(--gold);box-shadow:0 0 12px rgba(197,168,128,.2);animation:pulse-glow 3s ease-in-out infinite}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 8px rgba(197,168,128,.2)}50%{box-shadow:0 0 20px rgba(197,168,128,.5)}}
+
+h1{margin:4px 0 0;font-family:'Cinzel',serif;font-size:1.4rem;line-height:1.1;color:var(--gold-glow);text-shadow:0 2px 4px rgba(0,0,0,.8);letter-spacing:1px;text-align:center}
+.sub{margin:2px 0 0;font-size:.72rem;color:var(--muted);font-weight:500;text-align:center;font-style:italic}
+.lbl{margin:0 0 4px;font-size:.72rem;font-family:'Cinzel',serif;font-weight:700;color:var(--gold);letter-spacing:.5px}
+
+#fs-btn{position:fixed;z-index:60;top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:#141414;color:var(--gold);box-shadow:0 3px 8px rgba(0,0,0,.5);display:grid;place-items:center;font-size:.9rem}
+
+/* Setup */
+.setup,.result{display:flex;flex-direction:column;flex:1;min-height:0;gap:8px;justify-content:space-between;position:relative;z-index:1}
+.hero{text-align:center;padding-top:2px}
+.opts{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:6px}
+.opt{border:1px solid var(--border);background:#141414;color:var(--muted);border-radius:999px;padding:3px 10px;font-size:.68rem;font-weight:600;transition:all .15s}
+.opt.on{background:#241d18;color:var(--gold-glow);border-color:var(--gold);box-shadow:0 0 8px rgba(197,168,128,.2)}
+
+.pick{flex:1;min-height:0;display:flex;flex-direction:column}
+.themes-wrapper{flex:1;min-height:0;overflow-y:auto;padding-right:2px}
+.themes{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.tile{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--border);background:var(--card-bg);text-align:left;color:var(--text);transition:all .15s}
+.tile:active{transform:scale(.97)}
+.tile.sel{border-color:var(--gold);background:#1c1713;box-shadow:0 0 10px rgba(197,168,128,.25)}
+.ico{flex:none;width:28px;height:28px;border-radius:6px;display:grid;place-items:center;color:#c5a880;font-size:.8rem;background:#0d0d0d;border:1px solid var(--border)}
+.tile b{display:block;font-size:.7rem;font-family:'Cinzel',serif;font-weight:700;color:var(--gold-glow);line-height:1.1}
+.tile small{font-size:.58rem;color:var(--muted)}
+.tile div:last-child{min-width:0}
+
+.times{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.time-btn{padding:6px 0;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);font-weight:700;font-size:.75rem;color:var(--muted);transition:all .1s}
+.time-btn.sel{background:#241d18;color:var(--gold-glow);border-color:var(--gold)}
+
+/* Contagem Regressiva */
+#countdown-screen{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px;overflow:hidden}
+.countdown-content{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:400px;margin:auto}
+.countdown-title{font-family:'Cinzel',serif;font-weight:700;font-size:clamp(1.1rem,4vw,1.4rem);color:var(--gold);margin:0 0 10px 0;letter-spacing:1px}
+#countdown-number{font-family:'Cinzel',serif;font-size:clamp(6rem,30vh,13rem);font-weight:900;line-height:1;color:var(--blood-bright);text-shadow:0 0 25px rgba(211,47,47,.6);animation:pop .9s ease-out infinite;margin:0}
+@keyframes pop{0%{transform:scale(.4);opacity:0}40%{transform:scale(1.15);opacity:1}100%{transform:scale(1);opacity:1}}
+.hint{margin-top:15px;padding:8px 16px;border-radius:999px;background:#141414;border:1px solid var(--border);font-size:clamp(0.7rem,2.5vw,0.8rem);font-weight:500;color:var(--muted);max-width:95%}
+
+/* Jogo */
+#game-screen{z-index:40;display:grid;gap:8px;grid-template-columns:1fr 1fr;grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"bar bar" "word word" "skip ok";color:var(--text)}
+.bar{grid-area:bar;display:flex;justify-content:space-between;align-items:center;gap:8px;padding-right:42px}
+.pill{background:var(--card-bg);border:1px solid var(--border);color:var(--text);border-radius:999px;padding:5px 14px;font-weight:700;font-size:.8rem;display:flex;align-items:center;gap:6px}
+.pill.urgent{background:#3a0e0e;border-color:var(--blood-bright);color:var(--blood-bright);animation:pulse .6s infinite}
+.pill.bump{animation:bump .35s}
+@keyframes pulse{50%{transform:scale(1.05)}}
+@keyframes bump{40%{transform:scale(1.25)}}
+.x{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--muted)}
+.wordbox{grid-area:word;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:0;cursor:pointer;padding:10px}
+.tag{background:#181512;border:1px solid var(--border);color:var(--gold);padding:3px 14px;border-radius:999px;font-weight:700;font-size:.7rem;margin-bottom:10px;font-family:'Cinzel',serif}
+#word-display{margin:0;max-width:100%;font-size:clamp(2rem,10vw,3.8rem);line-height:1.1;font-weight:700;font-family:'Cinzel',serif;color:var(--gold-glow);text-shadow:0 3px 10px rgba(0,0,0,.9);overflow-wrap:anywhere}
+#word-display.in-ok{animation:wOk .35s cubic-bezier(.3,1.6,.5,1)}
+#word-display.in-skip{animation:wSkip .3s ease-out}
+@keyframes wOk{0%{transform:translateY(-30px) scale(.7);opacity:0}100%{transform:none;opacity:1}}
+@keyframes wSkip{0%{transform:translateY(30px);opacity:0}100%{transform:none;opacity:1}}
+.act{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:12px;font-size:.85rem;font-family:'Cinzel',serif}
+.act i{font-size:1.2rem}
+.skip{grid-area:skip;background:#1a1212;border-color:#4a1c1c;color:#e09f9f}.ok{grid-area:ok;background:#121a14;border-color:#1c4a2a;color:#9fe0b5}
+.l-only{display:none}
+#flash{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .15s}
+#fb{position:absolute;left:50%;top:42%;z-index:5;pointer-events:none;opacity:0;font-size:clamp(1.6rem,8vw,3rem);font-weight:700;font-family:'Cinzel',serif;white-space:nowrap;text-shadow:0 4px 10px rgba(0,0,0,.8)}
+#fb.show{animation:fbpop .7s ease-out}
+@keyframes fbpop{0%{opacity:0;transform:translate(-50%,0) scale(.4)}25%{opacity:1;transform:translate(-50%,-10px) scale(1.1)}100%{opacity:0;transform:translate(-50%,-60px) scale(1)}}
+.part{position:fixed;z-index:6;pointer-events:none;animation:burst .75s ease-out forwards}
+@keyframes burst{to{transform:translate(var(--dx),var(--dy)) rotate(200deg) scale(.3);opacity:0}}
+.shake{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* Resultado */
+.result{grid-template-rows:auto minmax(0,1fr) auto}
+.top{text-align:center;padding-top:2px;padding-right:38px}
+.listbox{min-height:0;display:flex;flex-direction:column;flex:1}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.stat{padding:6px;border:1px solid var(--border)}.stat small{font-size:.62rem;font-weight:600;color:var(--muted);font-family:'Cinzel',serif}
+.stat b{display:block;font-size:1.7rem;line-height:1.1;font-family:'Cinzel',serif}
+#word-history{flex:1;min-height:0;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:5px;background:#0d0d0d;border:1px solid var(--border)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;background:#141414;border:1px solid #241e1a;font-size:.78rem;font-weight:500;animation:rowin .3s both}
+@keyframes rowin{from{opacity:0;transform:translateX(-10px)}}
+.chip{flex:none;font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:999px;font-family:'Cinzel',serif}
+.chip.ok{background:#122416;color:#9fe0b5;border:1px solid #1c4a2a}.chip.no{background:#241212;color:#e09f9f;border:1px solid #4a1c1c}
+
+@media (orientation:landscape) and (max-height:560px){
+ .setup{display:grid;grid-template-columns:minmax(180px,32%) 1fr;grid-template-areas:"hero themes" "time themes" "play themes";grid-template-rows:auto auto 1fr;column-gap:8px}
+ .hero{grid-area:hero;padding-top:0}.pick{grid-area:themes}.timebox{grid-area:time}.playbox{grid-area:play;align-self:end}
+ .hero .logo{width:32px;height:32px;font-size:.9rem}
+ h1{font-size:1.1rem}.sub{display:none}
+ .themes{grid-template-columns:repeat(2,1fr);gap:4px}
+ .tile{padding:3px 5px}.ico{width:20px;height:20px;font-size:.6rem}
+ .play{padding:7px;font-size:.9rem}
+ #game-screen{grid-template-columns:clamp(96px,17vw,150px) 1fr clamp(96px,17vw,150px);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"skip bar ok" "skip word ok"}
+ #word-display{font-size:clamp(1.8rem,14vh,3.8rem)}
+ .p-only{display:none}.l-only{display:inline}
+ .result{display:grid;grid-template-columns:minmax(190px,36%) 1fr;grid-template-areas:"top list" "btn list";grid-template-rows:1fr auto;column-gap:10px}
+ .top{grid-area:top}.listbox{grid-area:list}.btnbox{grid-area:btn}
+ .top .logo{width:32px;height:32px;font-size:.8rem}
+ .top h2{font-size:1rem!important}.top .sub{display:none}
+ .stats{margin-top:4px}.stat b{font-size:1.2rem}
+ #countdown-number { font-size: clamp(3.5rem, 22vh, 8rem); }
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<button id="fs-btn" onclick="toggleFullScreen()" aria-label="Toggle Fullscreen"><i id="fs-icon" class="fa-solid fa-expand"></i></button>
+
+<!-- 1. MENU -->
+<div id="setup-screen" class="screen bg-souls">
+ <div class="setup">
+  <div class="hero">
+   <div class="logo"><i class="fa-solid fa-skull"></i></div>
+   <h1>Souls Guess EN</h1>
+   <p class="sub">Phone on your forehead, carry the burden of fallen realms!</p>
+   <div class="opts">
+    <button id="opt-sound" class="opt" onclick="toggleOpt('sound')"><i class="fa-solid fa-volume-high"></i> Sound</button>
+    <button id="opt-tilt" class="opt" onclick="toggleOpt('tilt')"><i class="fa-solid fa-mobile-screen"></i> Gyroscope</button>
+    <button id="opt-touch" class="opt" onclick="toggleOpt('touch')"><i class="fa-solid fa-hand-pointer"></i> Touch</button>
+   </div>
+  </div>
+  <div class="pick">
+   <p class="lbl"><i class="fa-solid fa-book-skull"></i> Choose Realm / Lore</p>
+   <div class="themes-wrapper"><div id="themes-container" class="themes"></div></div>
+  </div>
+  <div class="timebox">
+   <p class="lbl"><i class="fa-solid fa-hourglass-half"></i> Vigil Time</p>
+   <div class="times">
+    <button class="time-btn" data-time="30" onclick="setTime(30)">30s</button>
+    <button class="time-btn" data-time="60" onclick="setTime(60)">1 min</button>
+    <button class="time-btn" data-time="90" onclick="setTime(90)">1m30</button>
+    <button class="time-btn" data-time="120" onclick="setTime(120)">2 min</button>
+   </div>
+  </div>
+  <div class="playbox"><button class="btn play" onclick="startCountdown()"><i class="fa-solid fa-fire"></i> Link the Fire</button></div>
+ </div>
+</div>
+
+<!-- 2. COUNTDOWN -->
+<div id="countdown-screen" class="screen bg-souls hidden">
+ <div class="countdown-content">
+  <p class="countdown-title">Prepare to Die...</p>
+  <div id="countdown-number">3</div>
+  <div class="hint" id="hint"></div>
+ </div>
+</div>
+
+<!-- 3. GAME -->
+<div id="game-screen" class="screen bg-souls hidden">
+ <div id="flash"></div>
+ <div id="fb"></div>
+ <div class="bar">
+  <div id="timer-box" class="pill"><i class="fa-solid fa-hourglass"></i><span id="timer-display">60</span>s</div>
+  <div id="score-box" class="pill"><i class="fa-solid fa-fire" style="color:var(--gold)"></i><span id="live-score">0</span></div>
+  <button class="x" onclick="endGame()" aria-label="Abandon"><i class="fa-solid fa-xmark"></i></button>
+ </div>
+ <div class="wordbox" onclick="handleCorrectClick()">
+  <span id="current-theme-label" class="tag">Realm</span>
+  <h2 id="word-display">...</h2>
+ </div>
+ <button class="btn act skip" onclick="event.stopPropagation();handleSkip()">
+  <i class="fa-solid fa-arrow-up p-only"></i><i class="fa-solid fa-arrow-left l-only"></i>Dodge (Skip)
+ </button>
+ <button class="btn act ok" onclick="event.stopPropagation();handleCorrect()">
+  <i class="fa-solid fa-arrow-down p-only"></i><i class="fa-solid fa-arrow-right l-only"></i>Victory (Correct)
+ </button>
+</div>
+
+<!-- 4. RESULT -->
+<div id="result-screen" class="screen bg-souls hidden">
+ <div class="result">
+  <div class="top">
+   <div class="logo"><i class="fa-solid fa-skull-crossbones"></i></div>
+   <h2 id="res-title" style="margin:2px 0 0;font-size:1.3rem;font-family:'Cinzel',serif;color:var(--gold-glow)">YOU DIED</h2>
+   <p class="sub" id="res-sub">Darkness has claimed another soul.</p>
+   <div class="stats">
+    <div class="card stat"><small>Souls Collected</small><b id="res-correct" style="color:#9fe0b5">0</b></div>
+    <div class="card stat"><small>Blows Dodged</small><b id="res-skipped" style="color:#e09f9f">0</b></div>
+   </div>
+  </div>
+  <div class="listbox">
+   <p class="lbl"><i class="fa-solid fa-scroll"></i> Journey Log</p>
+   <div id="word-history" class="card"></div>
+  </div>
+  <div class="btnbox"><button class="btn play" onclick="returnToMenu()"><i class="fa-solid fa-rotate-right"></i> Rest at Bonfire</button></div>
+ </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+let soundOn=true,tiltOn=true,touchOn=true,tiltActive=false,tiltListening=false,tiltArmed=false;
+const tiltSupported='DeviceOrientationEvent' in window;
+
+function refreshOpts(){
+ $('opt-sound').classList.toggle('on',soundOn);
+ $('opt-sound').innerHTML=`<i class="fa-solid ${soundOn?'fa-volume-high':'fa-volume-xmark'}"></i> Sound`;
+ $('opt-tilt').classList.toggle('on',tiltOn&&tiltSupported);
+ $('opt-touch').classList.toggle('on',touchOn);
+}
+
+function toggleOpt(k){
+ if(k==='sound')soundOn=!soundOn;
+ else if(k==='tilt')tiltOn=!tiltOn;
+ else if(k==='touch')touchOn=!touchOn;
+ try{
+  localStorage.setItem('souls_sound_en',soundOn?'1':'0');
+  localStorage.setItem('souls_tilt_en',tiltOn?'1':'0');
+  localStorage.setItem('souls_touch_en',touchOn?'1':'0');
+ }catch(e){}
+ refreshOpts();
+ playSound('click');
+}
+
+let audioCtx=null;
+function initAudio(){
+ try{
+  if(!audioCtx){
+   const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+   audioCtx=new AudioContextClass();
+  }
+  if(audioCtx.state==='suspended'){audioCtx.resume()}
+  const dummy=audioCtx.createOscillator();
+  const gain=audioCtx.createGain();
+  gain.gain.value=0.001;
+  dummy.connect(gain);
+  gain.connect(audioCtx.destination);
+  dummy.start();
+  dummy.stop(audioCtx.currentTime+0.01);
+ }catch(e){}
+}
+
+const SOUNDS={
+ correct:[[220,0,.15,'sawtooth',.15,440],[330,.1,.2,'triangle',.2,660]],
+ skip:[[110,0,.18,'sawtooth',.12,80]],
+ combo:[[330,0,.1,'triangle',.2],[440,.1,.1,'triangle',.2],[550,.2,.15,'triangle',.25],[880,.3,.3,'triangle',.3]],
+ beep:[[150,0,.12,'sine',.25]],
+ start:[[110,0,.25,'sawtooth',.3,220],[220,.2,.4,'triangle',.35,330]],
+ tick:[[180,0,.06,'square',.08]],
+ tick3:[[240,0,.09,'square',.12]],
+ click:[[200,0,.08,'sine',.12,120]],
+ armed:[[300,0,.08,'triangle',.15]],
+ buzz:[[70,0,.6,'sawtooth',.2,40]],
+ win:[[220,0,.2,'triangle',.25],[330,.2,.2,'triangle',.25],[440,.4,.3,'triangle',.3],[550,.7,.6,'triangle',.35]],
+ lose:[[150,0,.3,'sawtooth',.25,90],[100,.3,.5,'sawtooth',.3,50]]
+};
+
+function playSound(type){
+ if(!soundOn)return;
+ try{
+  initAudio();
+  if(!audioCtx)return;
+  const seq=SOUNDS[type];if(!seq)return;
+  const t0=audioCtx.currentTime;
+  seq.forEach(([f,s,d,w,v,f2])=>{
+   const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+   o.type=w;o.connect(g);g.connect(audioCtx.destination);
+   o.frequency.setValueAtTime(f,t0+s);
+   if(f2)o.frequency.linearRampToValueAtTime(f2,t0+s+d);
+   g.gain.setValueAtTime(v,t0+s);
+   g.gain.exponentialRampToValueAtTime(.01,t0+s+d);
+   o.start(t0+s);o.stop(t0+s+d+.02);
+  });
+ }catch(e){}
+}
+function vibrate(p){try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}}
+
+function toggleFullScreen(){
+ const el=document.documentElement;
+ if(!document.fullscreenElement&&!document.webkitFullscreenElement){
+  const r=el.requestFullscreen||el.webkitRequestFullscreen;
+  if(r){const p=r.call(el);if(p&&p.catch)p.catch(()=>{})}
+ }else{const x=document.exitFullscreen||document.webkitExitFullscreen;if(x)x.call(document)}
+}
+function updateFsIcon(){
+ const on=document.fullscreenElement||document.webkitFullscreenElement;
+ document.getElementById('fs-icon').className=on?'fa-solid fa-compress':'fa-solid fa-expand';
+}
+document.addEventListener('fullscreenchange',updateFsIcon);
+document.addEventListener('webkitfullscreenchange',updateFsIcon);
+
+let wakeLock=null;
+async function requestWakeLock(){try{if('wakeLock' in navigator)wakeLock=await navigator.wakeLock.request('screen')}catch(e){}}
+function releaseWakeLock(){try{if(wakeLock)wakeLock.release()}catch(e){}wakeLock=null}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&isPlaying)requestWakeLock()});
+
+async function enableTilt(){
+ if(!tiltSupported||!tiltOn)return false;
+ try{
+  if(typeof DeviceOrientationEvent.requestPermission==='function'){
+   const r=await DeviceOrientationEvent.requestPermission();
+   if(r!=='granted')return false;
+  }
+  if(!tiltListening){window.addEventListener('deviceorientation',onTilt);tiltListening=true}
+  return true;
+ }catch(e){return false}
+}
+function onTilt(e){
+ if(e.beta==null||e.gamma==null)return;
+ if(!isPlaying||!tiltActive)return;
+ const b=e.beta*Math.PI/180,g=e.gamma*Math.PI/180;
+ const z=Math.cos(g)*Math.cos(b);
+ if(!tiltArmed){
+  if(Math.abs(z)<0.3){tiltArmed=true;playSound('armed')}
+  return;
+ }
+ if(z<-0.55){tiltArmed=false;handleCorrect()}
+ else if(z>0.55){tiltArmed=false;handleSkip()}
+}
+
+const W=s=>s.split('|');
+const themes={
+ ds1:{name:"Dark Souls 1",icon:"fa-fire",c:["#8b5a2b","#3d2314"],words:W("Gwyn, Lord of Cinder|Artorias the Abysswalker|Ornstein the Dragonslayer|Smough the Executioner|Manus, Father of the Abyss|Sif, Great Grey Wolf|Chosen Undead|Solaire of Astora|Gwynevere|Gwyndolin|Sieglinde of Catarina|Siegmeyer of Catarina|Patches|Big Hat Logan|Iron Golem|Anor Londo|Firelink Shrine|Undead Burg|Blighttown|Sen's Fortress|The Kiln of the First Flame|Artorias' Greatsword|Zweihander|Lightning Spear|Estus Flask|Humanity|Four Kings|Bed of Chaos|Seath the Scaleless|Bell Gargoyles|Capra Demon|Gaping Dragon|Gravelord Nito|Crossbreed Priscilla|Smough's Hammer|Ornstein's Spear|Grass Crest Shield|Havel's Armor|Ring of Favor and Protection")},
+ ds2:{name:"Dark Souls 2",icon:"fa-crown",c:["#5c5243","#24201a"],words:W("Nashandra, Queen of Want|Looking Glass Knight|Old Iron King|Vendrick|Velstadt, the Royal Aegis|Sir Alonne|Fume Knight|Sinh, the Slumbering Dragon|Elana, Squalid Queen|Burnt Ivory King|Bearer of the Curse|Emerald Herald (Shanalotte)|Lucatiel of Mirrah|Benhart of Jugo|Maughlin the Armorer|Majula|Forest of Fallen Giants|Drangleic Castle|Shrine of Amana|Iron Keep|Cursed Undead Bone|Human Effigy|Fume Ultra Greatsword|Alonne Greatsword|Ring of Blades|Soul Vessel|Bonfire Ascetic")},
+ ds3:{name:"Dark Souls 3",icon:"fa-skull",c:["#4a1c1c","#1a0808"],words:W("Soul of Cinder|Slave Knight Gael|Sister Friede|Darkeater Midir|Abyss Watchers|Yhorm the Giant|Aldrich, Devourer of Gods|Dancer of the Boreal Valley|Pontiff Sulyvahn|Nameless King|Ashen One|Firekeeper|Hawkwood|Greirat of the Undead Settlement|Irithyll of the Boreal Valley|Grand Archives|Cathedral of the Deep|Farron Greatsword|Moonlight Greatsword|Astora Greatsword|Twin Princes Lothric & Lorian|Deacons of the Deep|High Lord Wolnir|Oceiros, the Consumed King|Champion Gundyr|Ancient Wyvern")},
+ bloodborne:{name:"Bloodborne",icon:"fa-moon",c:["#3a1a4a","#13081c"],words:W("Gehrman, the First Hunter|Orphan of Kos|Lady Maria of the Astral Clocktower|Ludwig, the Holy Blade|Father Gascoigne|Cleric Beast|Vicar Amelia|Micolash, Host of the Nightmare|Mergo's Wet Nurse|Ebrietas, Daughter of the Cosmos|The Hunter|The Doll|Messengers|Central Yharnam|Cathedral Ward|Yahar'gul, Unseen Village|Cainhurst Castle|Nightmare of Mensis|Ludwig's Holy Blade|Burial Blade|Chikage|Gatling Gun|Hunter Rifle|Blood Vial|Insight|Frenzy")},
+ eldenring:{name:"Elden Ring",icon:"fa-ring",c:["#c5a880","#3d3323"],words:W("Malenia, Blade of Miquella|Starscourge Radahn|Godfrey, First Elden Lord|Radagon of the Golden Order|Elden Beast|Maliketh, the Black Blade|Morgott, the Omen King|Mohg, Lord of Blood|Rykard, Lord of Blasphemy|Rennala, Queen of the Full Moon|Godrick the Grafted|Godwyn the Golden|Ranni the Witch|The Tarnished|Melina|Blaidd the Half-Wolf|Iron Fist Alexander|Margit, the Fell Omen|Dragonlord Placidusax|Limgrave|Caelid|Altus Plateau|Leyndell, Royal Capital|Crumbling Farum Azula|Miquella's Haligtree|Siofra River|Rivers of Blood|Moonveil|Blasphemous Blade|Greatsword|Mimic Tear Ashes|Torrent")},
+ demons:{name:"Demon's Souls",icon:"fa-ghost",c:["#2b4a5c","#0f1a20"],words:W("King Allant|Maiden Astraea|Garl Vinland|Flamelurker|Tower Knight|Phalanx|Adjudicator|The Old Monk|Biorr of the Twin Fangs|Ostrava of Boletaria|Thomas the Stockpile|The Monumental|The Nexus|Boletaria|Palace of Boletaria|Shrine of Storms|Valley of Defilement|Tower of Latria|Grey Demon's Soul|Moonlight Greatsword|Soul Form|Body Form|Cling Ring|Hardstone")},
+ mixtao:{name:"Mixed (All Realms)",icon:"fa-dungeon",c:["#6b1c1c","#171717"],words:[...new Set(Object.values({
+  ds1:W("Gwyn|Artorias|Ornstein|Smough|Manus|Sif|Chosen Undead|Solaire|Anor Londo|Firelink Shrine|Zweihander|Estus Flask"),
+  ds2:W("Nashandra|Velstadt|Sir Alonne|Fume Knight|Majula|Drangleic|Bearer of the Curse"),
+  ds3:W("Gael|Friede|Midir|Abyss Watchers|Yhorm|Aldrich|Ashen One|Firekeeper|Irithyll"),
+  bloodborne:W("Gehrman|Maria|Ludwig|Gascoigne|Yharnam|Doll|Hunter|Insight|Blood Vial"),
+  eldenring:W("Malenia|Radahn|Godfrey|Radagon|Maliketh|Ranni|Tarnished|Melina|Torrent|Rivers of Blood"),
+  demons:W("Allant|Astraea|Flamelurker|Nexus|Boletaria|Soul Form")
+ }).flatMap(t=>t.words))]}};
+
+Object.values(themes).forEach(t=>{const seen=new Set();t.words=t.words.filter(w=>{const k=w.toLowerCase();if(seen.has(k))return false;seen.add(k);return true})});
+
+let selectedTheme='ds1',gameTime=60,currentWords=[],currentIndex=0,scoreCorrect=0,scoreSkipped=0,streak=0,
+ wordHistoryList=[],timerInterval=null,countdownTimeout=null,endTime=0,timeLeft=60,
+ isPlaying=false,isCounting=false,lastAction=0,lastShownWord=null;
+
+function loadPrefs(){try{
+ const t=localStorage.getItem('souls_theme_en'),s=parseInt(localStorage.getItem('souls_time_en'),10);
+ if(t&&themes[t])selectedTheme=t;if([30,60,90,120].includes(s))gameTime=s;
+ if(localStorage.getItem('souls_sound_en')==='0')soundOn=false;
+ if(localStorage.getItem('souls_tilt_en')==='0')tiltOn=false;
+ if(localStorage.getItem('souls_touch_en')==='0')touchOn=false;
+}catch(e){}}
+function savePrefs(){try{localStorage.setItem('souls_theme_en',selectedTheme);localStorage.setItem('souls_time_en',String(gameTime))}catch(e){}}
+
+function initThemes(){
+ const box=$('themes-container');box.innerHTML='';
+ for(const [key,t] of Object.entries(themes)){
+  const b=document.createElement('button');
+  b.className='card tile'+(key===selectedTheme?' sel':'');
+  b.onclick=()=>{selectedTheme=key;savePrefs();playSound('click');initThemes()};
+  const ico=document.createElement('div');ico.className='ico';
+  ico.style.background=`linear-gradient(135deg,${t.c[0]},${t.c[1]})`;
+  ico.innerHTML=`<i class="fa-solid ${t.icon}"></i>`;
+  const txt=document.createElement('div');
+  const n=document.createElement('b');n.textContent=t.name;
+  const s=document.createElement('small');s.textContent=t.words.length+' relics';
+  txt.append(n,s);b.append(ico,txt);box.appendChild(b);
+ }
+ const sel=box.querySelector('.sel');if(sel&&sel.scrollIntoView)sel.scrollIntoView({block:'nearest'});
+}
+function setTime(sec){
+ gameTime=sec;savePrefs();playSound('click');
+ document.querySelectorAll('.time-btn').forEach(b=>b.classList.toggle('sel',parseInt(b.dataset.time,10)===sec));
+}
+function shuffleArray(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r}
+function setBg(el){const c=themes[selectedTheme].c;el.style.background=`radial-gradient(circle at center, ${c[0]} 0%, #080706 85%)`}
+
+async function startCountdown(){
+ if(isCounting||isPlaying)return;
+ isCounting=true;
+ initAudio();
+ playSound('click');
+
+ tiltActive=false;tiltArmed=false;
+ const hint=$('hint');
+ 
+ let infoText='';
+ if(tiltOn&&touchOn)infoText='<i class="fa-solid fa-mobile-screen"></i> Gyroscope or Swipe ↓/↑ active';
+ else if(tiltOn)infoText='<i class="fa-solid fa-mobile-screen"></i> Tilt down (Victory) or up (Dodge)';
+ else if(touchOn)infoText='<i class="fa-solid fa-hand-pointer"></i> Swipe or tap to Victory / Dodge';
+ else infoText='<i class="fa-solid fa-triangle-exclamation"></i> No controls active! Use screen buttons.';
+ 
+ hint.innerHTML=infoText;
+
+ if(tiltOn){
+  const ok=await enableTilt();
+  tiltActive=ok;
+  if(!ok&&tiltOn){hint.innerHTML+='<br><small style="color:#d32f2f">Gyro unavailable. Using touch/buttons.</small>';}
+ }
+
+ currentWords=shuffleArray(themes[selectedTheme].words);
+ currentIndex=0;scoreCorrect=0;scoreSkipped=0;streak=0;wordHistoryList=[];lastShownWord=null;
+ document.body.classList.add('in-game');
+ $('setup-screen').classList.add('hidden');
+ const cs=$('countdown-screen');setBg(cs);cs.classList.remove('hidden');
+ let count=3;const num=$('countdown-number');num.innerText=count;playSound('beep');vibrate(30);
+ const step=()=>{
+  count--;
+  if(count>0){num.innerText=count;playSound('beep');vibrate(30)}
+  else if(count===0){num.innerText='LUCTUS!';playSound('start');vibrate([80,40,80])}
+  else{cs.classList.add('hidden');isCounting=false;startGame();return}
+  countdownTimeout=setTimeout(step,1000);
+ };
+ countdownTimeout=setTimeout(step,1000);
+}
+
+function startGame(){
+ isPlaying=true;lastAction=0;tiltArmed=false;requestWakeLock();
+ const gs=$('game-screen');setBg(gs);gs.classList.remove('hidden');
+ $('current-theme-label').innerText=themes[selectedTheme].name;
+ $('live-score').innerText='0';$('timer-box').classList.remove('urgent');
+ timeLeft=gameTime;$('timer-display').innerText=timeLeft;
+ showNextWord('ok');
+ endTime=Date.now()+gameTime*1000;
+ timerInterval=setInterval(()=>{
+  const r=Math.max(0,Math.ceil((endTime-Date.now())/1000));
+  if(r!==timeLeft){
+   timeLeft=r;$('timer-display').innerText=r;
+   if(r<=10&&r>0){$('timer-box').classList.add('urgent');playSound(r<=3?'tick3':'tick')}
+  }
+  if(r<=0)endGame(true);
+ },200);
+}
+function showNextWord(kind){
+ if(currentIndex>=currentWords.length){
+  currentWords=shuffleArray(themes[selectedTheme].words);currentIndex=0;
+  if(currentWords.length>1&&currentWords[0]===lastShownWord)[currentWords[0],currentWords[1]]=[currentWords[1],currentWords[0]];
+ }
+ lastShownWord=currentWords[currentIndex];
+ const el=$('word-display');el.textContent=lastShownWord;
+ el.classList.remove('in-ok','in-skip');void el.offsetWidth;el.classList.add(kind==='skip'?'in-skip':'in-ok');
+}
+function canAct(){if(!isPlaying)return false;const n=Date.now();if(n-lastAction<350)return false;lastAction=n;return true}
+function flash(color){const f=$('flash');f.style.background=color;f.style.opacity='.5';setTimeout(()=>{f.style.opacity='0'},170)}
+function feedback(text,color){const f=$('fb');f.textContent=text;f.style.color=color;f.classList.remove('show');void f.offsetWidth;f.classList.add('show')}
+function burst(emojis){
+ for(let i=0;i<10;i++){
+  const p=document.createElement('span');p.className='part';p.textContent=emojis[i%emojis.length];
+  const a=Math.random()*Math.PI*2,d=80+Math.random()*110;
+  p.style.left='50%';p.style.top='45%';p.style.fontSize=(16+Math.random()*14)+'px';
+  p.style.setProperty('--dx',Math.cos(a)*d+'px');p.style.setProperty('--dy',Math.sin(a)*d+'px');
+  document.body.appendChild(p);setTimeout(()=>p.remove(),800);
+ }
+}
+function handleCorrect(){
+ if(!canAct())return;
+ scoreCorrect++;streak++;
+ wordHistoryList.push({word:currentWords[currentIndex],status:'correct'});
+ $('live-score').innerText=scoreCorrect;
+ const sb=$('score-box');sb.classList.remove('bump');void sb.offsetWidth;sb.classList.add('bump');
+ flash('#1c4a2a');vibrate(40);
+ if(streak>=3&&streak%3===0){playSound('combo');feedback('🔥 Souls Echo x'+streak+'!','#f3e5ab');burst(['🔥','✨','⚔️'])}
+ else{playSound('correct');feedback('✔ Victory!','#9fe0b5');burst(['✨','⚔️'])}
+ currentIndex++;showNextWord('ok');
+}
+function handleCorrectClick(){if(touchOn)handleCorrect()}
+function handleSkip(){
+ if(!canAct())return;
+ playSound('skip');scoreSkipped++;streak=0;
+ wordHistoryList.push({word:currentWords[currentIndex],status:'skipped'});
+ flash('#4a1c1c');vibrate([30,30,30]);feedback('⏭ Dodged','#e09f9f');
+ const g=$('game-screen');g.classList.remove('shake');void g.offsetWidth;g.classList.add('shake');
+ currentIndex++;showNextWord('skip');
+}
+
+let tY=0,tX=0;
+window.addEventListener('touchstart',e=>{if(!isPlaying||!touchOn)return;tY=e.changedTouches[0].screenY;tX=e.changedTouches[0].screenX},{passive:true});
+window.addEventListener('touchend',e=>{
+ if(!isPlaying||!touchOn)return;
+ const dy=e.changedTouches[0].screenY-tY,dx=e.changedTouches[0].screenX-tX;
+ if(Math.max(Math.abs(dx),Math.abs(dy))<40)return;
+ const good=Math.abs(dy)>=Math.abs(dx)?dy>0:dx>0;
+ good?handleCorrect():handleSkip();
+},{passive:true});
+
+function confetti(){
+ const em=['🔥','⚔️','✨','💀','🩸','🛡️'];
+ for(let i=0;i<24;i++){
+  const s=document.createElement('span');s.className='confetti';s.textContent=em[i%em.length];
+  s.style.left=Math.random()*96+'vw';s.style.fontSize=(16+Math.random()*16)+'px';
+  s.style.animationDuration=(2.2+Math.random()*2)+'s';s.style.animationDelay=(Math.random()*.8)+'s';
+  document.body.appendChild(s);setTimeout(()=>s.remove(),5400);
+ }
+}
+function countUp(el,to){
+ el.innerText='0';if(!to)return;
+ let n=0;const step=Math.max(60,Math.min(140,900/to));
+ const iv=setInterval(()=>{n++;el.innerText=n;if(n>=to)clearInterval(iv)},step);
+}
+function endGame(timeUp){
+ if(!isPlaying)return;
+ isPlaying=false;tiltArmed=false;clearInterval(timerInterval);releaseWakeLock();
+ $('game-screen').classList.add('hidden');
+ $('result-screen').classList.remove('hidden');
+ $('res-title').innerText=scoreCorrect>=8?'CHAMPION OF ASHES 🏆':'YOU DIED';
+ $('res-sub').innerText=scoreCorrect>=8?'Your legend shall echo across realms!':'Darkness has claimed your soul.';
+ countUp($('res-correct'),scoreCorrect);countUp($('res-skipped'),scoreSkipped);
+ const box=$('word-history');box.innerHTML='';
+ if(!wordHistoryList.length){
+  const p=document.createElement('p');p.style.cssText='text-align:center;font-size:.8rem;color:var(--muted)';
+  p.textContent='No relics found.';box.appendChild(p);
+ }else{
+  wordHistoryList.forEach((it,i)=>{
+   const ok=it.status==='correct';
+   const row=document.createElement('div');row.className='row';row.style.animationDelay=Math.min(i*40,800)+'ms';
+   const w=document.createElement('span');w.textContent=it.word;
+   const c=document.createElement('span');c.className='chip '+(ok?'ok':'no');c.textContent=ok?'Conquered':'Dodged';
+   row.append(w,c);box.appendChild(row);
+  });
+ }
+ if(timeUp)playSound('buzz');
+ setTimeout(()=>playSound(scoreCorrect>0?'win':'lose'),timeUp?500:0);
+ if(scoreCorrect>0)confetti();
+}
+function returnToMenu(){
+ $('result-screen').classList.add('hidden');
+ $('setup-screen').classList.remove('hidden');
+ document.body.classList.remove('in-game');
+ playSound('click');initThemes();
+}
+window.onload=()=>{
+ loadPrefs();refreshOpts();initThemes();setTime(gameTime);
+};
+</script>
+</body>
+</html>
