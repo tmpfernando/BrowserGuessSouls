@@ -45,7 +45,7 @@ h1{margin:4px 0 0;font-family:'Cinzel',serif;font-size:1.4rem;line-height:1.1;co
 .pick{flex:1;min-height:0;display:flex;flex-direction:column}
 .themes-wrapper{flex:1;min-height:0;overflow-y:auto;padding-right:2px}
 .themes{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
-.tile{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--border);background:var(--card-bg);text-align:left;color:var(--text);transition:all .15s}
+.tile{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--border);background:var(--card-bg);text-align:left;color:var(--text);transition:all .15s;cursor:pointer}
 .tile:active{transform:scale(.97)}
 .tile.sel{border-color:var(--gold);background:#1c1713;box-shadow:0 0 10px rgba(197,168,128,.25)}
 .ico{flex:none;width:28px;height:28px;border-radius:6px;display:grid;place-items:center;color:#c5a880;font-size:.8rem;background:#0d0d0d;border:1px solid var(--border)}
@@ -366,10 +366,13 @@ function loadPrefs(){try{
 function savePrefs(){try{localStorage.setItem('souls_theme_en',selectedTheme);localStorage.setItem('souls_time_en',String(gameTime))}catch(e){}}
 
 function initThemes(){
- const box=$('themes-container');box.innerHTML='';
+ const box=$('themes-container');
+ if(!box) return;
+ box.innerHTML='';
  for(const [key,t] of Object.entries(themes)){
   const b=document.createElement('button');
   b.className='card tile'+(key===selectedTheme?' sel':'');
+  b.type='button';
   b.onclick=()=>{selectedTheme=key;savePrefs();playSound('click');initThemes()};
   const ico=document.createElement('div');ico.className='ico';
   ico.style.background=`linear-gradient(135deg,${t.c[0]},${t.c[1]})`;
@@ -539,11 +542,15 @@ function returnToMenu(){
  $('result-screen').classList.add('hidden');
  $('setup-screen').classList.remove('hidden');
  document.body.classList.remove('in-game');
- playSound('click');initThemes();
+ playSound('click');
+ initThemes();
 }
-window.onload=()=>{
- loadPrefs();refreshOpts();initThemes();setTime(gameTime);
-};
+window.addEventListener('DOMContentLoaded', ()=>{
+ loadPrefs();
+ refreshOpts();
+ initThemes();
+ setTime(gameTime);
+});
 </script>
 </body>
 </html>
