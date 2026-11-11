@@ -1,461 +1,353 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#121212">
-<title>Browser Guess: Souls-like Edition</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>Souls Guess</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0d0d0d;--panel:#171717;--border:#33291e;--gold:#c5a880;--gold-glow:#f3e2c4;--crimson:#8b0000;--dark-red:#4a0505;--text:#d1c7bd;--muted:#887e75}
+:root{color-scheme:dark;--bg:#050505;--panel:#121110;--border:#2e2518;--gold:#b89a6a;--glow:#e9d8b4;--red:#9c1c1c;--text:#cfc4b6;--muted:#7d7469}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;overflow:hidden;font-family:'Rajdhani',system-ui,sans-serif;color:var(--text);background:var(--bg);touch-action:manipulation;user-select:none;-webkit-user-select:none}
-.hidden{display:none!important}
-button{font:inherit;cursor:pointer}
-
-/* Telas Gerais */
-.screen{position:fixed;inset:0;display:flex;flex-direction:column;overflow:hidden;
- padding:max(10px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
-.bg-souls{background:radial-gradient(circle at center, #1c1815 0%, #0a0908 100%);border: 2px solid var(--border)}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.6)}
-.btn{border:1px solid var(--gold);border-radius:4px;color:var(--gold);font-family:'Cinzel',serif;font-weight:700;background:#14110f;box-shadow:0 3px 6px rgba(0,0,0,.5);transition:all .15s}
-.btn:active{transform:translateY(2px);background:#221b16}
-.play{width:100%;padding:14px;font-size:1.2rem;background:linear-gradient(180deg,#2a1f18,#120e0c);color:var(--gold-glow);border:2px solid var(--gold);letter-spacing:1px;text-transform:uppercase;animation:pulseglow 3s infinite}
-@keyframes pulseglow{0%,100%{box-shadow:0 0 8px rgba(197,168,128,.2)}50%{box-shadow:0 0 18px rgba(197,168,128,.5)}}
-
-.logo{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#111;border:2px solid var(--gold);font-size:1.2rem;color:var(--gold);box-shadow:0 0 10px rgba(197,168,128,.3)}
-h1{margin:2px 0 0;font-family:'Cinzel',serif;font-size:1.5rem;line-height:1;color:var(--gold-glow);text-shadow:0 2px 4px rgba(0,0,0,.9);letter-spacing:1px}
-.sub{margin:4px 0 0;font-size:.75rem;color:var(--muted);font-style:italic}
-.lbl{margin:0 0 4px;font-size:.75rem;font-family:'Cinzel',serif;color:var(--gold);font-weight:700;letter-spacing:.5px}
-#fs-btn{position:fixed;z-index:60;top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));width:36px;height:36px;border-radius:50%;border:1px solid var(--gold);background:#111;color:var(--gold);display:grid;place-items:center;font-size:.9rem}
-
-/* Setup */
+.hidden{display:none!important}button{font:inherit;cursor:pointer}
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;overflow:hidden;padding:max(10px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
+.bg{background:radial-gradient(ellipse at 50% 30%,#1b1612 0%,#070605 70%,#000 100%)}
+.bg::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 120px 40px #000}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:4px}
+.btn{border:1px solid var(--gold);border-radius:2px;color:var(--gold);font-family:'Cinzel',serif;font-weight:700;background:#0e0c0a;transition:all .15s}
+.btn:active{transform:translateY(2px);background:#1c1611}
+.play{width:100%;padding:14px;font-size:1.15rem;color:var(--glow);letter-spacing:3px;text-transform:uppercase;animation:glow 3s infinite}
+@keyframes glow{50%{box-shadow:0 0 18px rgba(184,154,106,.45)}}
+.logo{font-size:2rem;filter:grayscale(.3)}
+h1{margin:0;font-family:'Cinzel',serif;font-size:1.7rem;color:var(--glow);letter-spacing:5px;text-shadow:0 0 14px rgba(184,154,106,.4)}
+.sub{margin:4px 0 0;font-size:.78rem;color:var(--muted);font-style:italic}
+.lbl{margin:0 0 4px;font-size:.72rem;font-family:'Cinzel',serif;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
+#fs-btn{position:fixed;z-index:60;top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:#0e0c0a;color:var(--gold)}
 .setup,.result{display:flex;flex-direction:column;flex:1;min-height:0;gap:8px;justify-content:space-between;position:relative;z-index:1}
-.hero{text-align:center;padding-top:2px}
-.opts{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:6px}
-.opt{border:1px solid var(--border);background:#14110f;color:var(--muted);border-radius:4px;padding:4px 10px;font-size:.68rem;font-family:'Cinzel',serif;transition:all .15s}
-.opt.on{background:#261f18;border-color:var(--gold);color:var(--gold-glow)}
+.hero{text-align:center}
+.opts{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:8px}
+.opt{border:1px solid var(--border);background:#0e0c0a;color:var(--muted);border-radius:2px;padding:4px 10px;font-size:.66rem;font-family:'Cinzel',serif}
+.opt.on{border-color:var(--gold);color:var(--glow);background:#1a140e}
 .pick{flex:1;min-height:0;display:flex;flex-direction:column}
-.themes-wrapper{flex:1;min-height:0;overflow-y:auto;padding-right:2px}
+.tw{flex:1;min-height:0;overflow-y:auto}
 .themes{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
-.tile{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--border);text-align:left;color:var(--text);transition:all .15s;background:#14110f}
-.tile:active{transform:scale(.97)}
-.tile.sel{border-color:var(--gold);background:#221b16;box-shadow:inset 0 0 8px rgba(197,168,128,.2)}
-.ico{flex:none;width:28px;height:28px;border-radius:4px;display:grid;place-items:center;color:var(--gold);background:#0a0908;border:1px solid var(--border);font-size:.8rem}
-.tile b{display:block;font-size:.75rem;font-family:'Cinzel',serif;color:var(--gold-glow);line-height:1.1}
+.tile{display:flex;align-items:center;gap:8px;padding:6px 8px;text-align:left;color:var(--text);background:#0e0c0a}
+.tile.sel{border-color:var(--gold);background:#1a140e;box-shadow:inset 0 0 10px rgba(184,154,106,.2)}
+.ico{flex:none;width:28px;height:28px;display:grid;place-items:center;background:#000;border:1px solid var(--border);font-size:.9rem}
+.tile b{display:block;font-size:.72rem;font-family:'Cinzel',serif;color:var(--glow);line-height:1.1}
 .tile small{font-size:.6rem;color:var(--muted)}
 .times{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.time-btn{padding:6px 0;border:1px solid var(--border);border-radius:4px;background:#14110f;font-weight:700;font-size:.75rem;color:var(--muted);transition:all .1s}
-.time-btn.sel{background:#261f18;color:var(--gold-glow);border-color:var(--gold)}
-
-/* Contagem Regressiva */
-#countdown-screen {
- position: fixed; inset: 0; z-index: 50;
- display: flex; flex-direction: column; align-items: center; justify-content: center;
- text-align: center; padding: 12px; overflow: hidden; background: rgba(5,5,5,0.95);
-}
-.countdown-content { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 400px; margin: auto; }
-.countdown-title { font-family:'Cinzel',serif; font-weight: 700; font-size: clamp(1rem, 4vw, 1.4rem); color: var(--gold); margin: 0 0 10px 0; letter-spacing: 2px; }
-#countdown-number { font-family:'Cinzel',serif; font-size: clamp(6rem, 30vh, 12rem); font-weight: 900; line-height: 1; color: var(--gold-glow); text-shadow: 0 0 20px rgba(197,168,128,.5); animation: pop .9s ease-out infinite; margin: 0; }
-@keyframes pop { 0% { transform: scale(.5); opacity: 0; } 40% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
-.hint { margin-top: 15px; padding: 8px 16px; border-radius: 4px; background: #14110f; border: 1px solid var(--border); font-size: clamp(0.7rem, 2.5vw, 0.8rem); color: var(--muted); max-width: 95%; }
-
-/* Jogo */
-#game-screen{z-index:40;display:grid;gap:8px;grid-template-columns:1fr 1fr;grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"bar bar" "word word" "skip ok";color:#fff}
-.bar{grid-area:bar;display:flex;justify-content:space-between;align-items:center;gap:8px;padding-right:42px}
-.pill{background:#14110f;border:1px solid var(--border);color:var(--gold);border-radius:4px;padding:5px 14px;font-weight:700;display:flex;align-items:center;gap:6px;font-family:'Cinzel',serif;font-size:.85rem}
-.pill.urgent{background:var(--dark-red);color:#ff9999;border-color:var(--crimson);animation:pulse .6s infinite}
+.tb{padding:6px 0;border:1px solid var(--border);background:#0e0c0a;font-weight:700;font-size:.75rem;color:var(--muted)}
+.tb.sel{background:#1a140e;color:var(--glow);border-color:var(--gold)}
+#cd{position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;text-align:center}
+.cdc{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;max-width:420px}
+.cdt{font-family:'Cinzel',serif;font-size:clamp(1rem,4vw,1.4rem);color:var(--gold);letter-spacing:4px;margin:0 0 8px}
+#cdn{font-family:'Cinzel',serif;font-size:clamp(5rem,28vh,11rem);font-weight:900;line-height:1;color:var(--glow);text-shadow:0 0 24px rgba(184,154,106,.5);animation:pop .9s ease-out infinite}
+@keyframes pop{0%{transform:scale(.6);opacity:0}40%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+.hint{margin-top:12px;padding:8px 14px;border:1px solid var(--border);background:#0e0c0a;font-size:.78rem;color:var(--muted)}
+#game{z-index:40;display:grid;gap:8px;grid-template-columns:1fr 1fr;grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"bar bar" "word word" "skip ok"}
+.bar{grid-area:bar;display:flex;justify-content:space-between;align-items:center;gap:8px;padding-right:42px;position:relative;z-index:1}
+.pill{background:#0e0c0a;border:1px solid var(--border);color:var(--gold);padding:5px 14px;font-weight:700;font-family:'Cinzel',serif;font-size:.85rem}
+.pill.urgent{background:#3a0707;color:#ff9a9a;border-color:var(--red);animation:pulse .6s infinite}
 .pill.bump{animation:bump .35s}
-@keyframes pulse{50%{transform:scale(1.08)}}
-@keyframes bump{40%{transform:scale(1.25)}}
-.x{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:#14110f;color:var(--muted)}
-.wordbox{grid-area:word;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:0;cursor:pointer}
-.tag{background:#14110f;border:1px solid var(--border);color:var(--gold);padding:3px 14px;border-radius:4px;font-family:'Cinzel',serif;font-size:.7rem;margin-bottom:10px;letter-spacing:1px}
-#word-display{margin:0;max-width:100%;font-family:'Cinzel',serif;font-size:clamp(2rem,9vw,3.8rem);line-height:1.1;font-weight:700;color:var(--gold-glow);text-shadow:0 4px 12px rgba(0,0,0,.9);overflow-wrap:anywhere}
-#word-display.in-ok{animation:wOk .35s cubic-bezier(.3,1.6,.5,1)}
-#word-display.in-skip{animation:wSkip .3s ease-out}
+@keyframes pulse{50%{transform:scale(1.08)}}@keyframes bump{40%{transform:scale(1.25)}}
+.x{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:#0e0c0a;color:var(--muted)}
+.wb{grid-area:word;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:0;position:relative;z-index:1}
+.tag{border:1px solid var(--border);background:#0e0c0a;color:var(--gold);padding:3px 14px;font-family:'Cinzel',serif;font-size:.68rem;margin-bottom:10px;letter-spacing:2px}
+#word{margin:0;max-width:100%;font-family:'Cinzel',serif;font-size:clamp(2rem,9vw,3.8rem);line-height:1.1;font-weight:700;color:var(--glow);text-shadow:0 4px 14px #000;overflow-wrap:anywhere}
+.in-ok{animation:wOk .35s cubic-bezier(.3,1.6,.5,1)}.in-skip{animation:wSk .3s ease-out}
 @keyframes wOk{0%{transform:translateY(-40px) scale(.7);opacity:0}100%{transform:none;opacity:1}}
-@keyframes wSkip{0%{transform:translateY(40px);opacity:0}100%{transform:none;opacity:1}}
-.act{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:12px;font-size:.9rem;font-family:'Cinzel',serif;letter-spacing:.5px}
-.act i{font-size:1.2rem}
-.skip{grid-area:skip;background:#1a100e;border-color:#5c221a;color:#d98273}
-.ok{grid-area:ok;background:#0e1a14;border-color:#1c593c;color:#73d9a6}
-.l-only{display:none}
-#flash{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .15s}
-#fb{position:absolute;left:50%;top:42%;z-index:5;pointer-events:none;opacity:0;font-family:'Cinzel',serif;font-size:clamp(1.8rem,8vw,3rem);font-weight:700;white-space:nowrap;text-shadow:0 4px 10px rgba(0,0,0,.9)}
-#fb.show{animation:fbpop .7s ease-out}
-@keyframes fbpop{0%{opacity:0;transform:translate(-50%,0) scale(.5)}25%{opacity:1;transform:translate(-50%,-10px) scale(1.1)}100%{opacity:0;transform:translate(-50%,-60px) scale(1)}}
+@keyframes wSk{0%{transform:translateY(40px);opacity:0}100%{transform:none;opacity:1}}
+.act{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px;font-size:.85rem;letter-spacing:1px;position:relative;z-index:1}
+.skip{grid-area:skip;background:#180b0a;border-color:#5a1f1a;color:#d9806f}
+.ok{grid-area:ok;background:#0d150f;border-color:#2c5a3a;color:#8fd3a4}
+.l{display:none}
+#flash{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .2s;z-index:2}
+#fb{position:absolute;left:0;right:0;top:15%;z-index:5;pointer-events:none;opacity:0;text-align:center;font-family:'Cinzel',serif;font-weight:900;padding:.4em 0;background:linear-gradient(90deg,transparent,rgba(0,0,0,.7) 20%,rgba(0,0,0,.7) 80%,transparent);font-size:clamp(1.3rem,6vw,2.6rem);letter-spacing:.3em;text-shadow:0 0 18px currentColor}
+#fb.show{animation:fb 1.1s ease-out}
+@keyframes fb{0%{opacity:0;letter-spacing:.15em}15%{opacity:1}70%{opacity:1}100%{opacity:0;letter-spacing:.45em}}
 .part{position:fixed;z-index:6;pointer-events:none;animation:burst .75s ease-out forwards}
-@keyframes burst{to{transform:translate(var(--dx),var(--dy)) rotate(200deg) scale(.3);opacity:0}}
-.shake{animation:shake .3s}
-@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-
-/* Resultado */
-.result{grid-template-rows:auto minmax(0,1fr) auto}
-.top{text-align:center;padding-top:2px;padding-right:38px}
+@keyframes burst{to{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}
+.shake{animation:shake .3s}@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.top{text-align:center;padding-right:38px}
 .listbox{min-height:0;display:flex;flex-direction:column;flex:1}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-.stat{padding:6px;background:#14110f;border:1px solid var(--border)}.stat small{font-size:.65rem;color:var(--muted);font-family:'Cinzel',serif}
-.stat b{display:block;font-size:1.8rem;line-height:1.1;font-family:'Cinzel',serif;color:var(--gold-glow)}
-#word-history{flex:1;min-height:0;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:5px;background:#111}
-.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;border-radius:4px;background:#171717;border:1px solid var(--border);font-size:.8rem;animation:rowin .3s both}
-@keyframes rowin{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
-.chip{flex:none;font-size:.65rem;font-family:'Cinzel',serif;font-weight:700;padding:2px 8px;border-radius:3px}
-.chip.ok{background:#0e1a14;color:#73d9a6;border:1px solid #1c593c}
-.chip.no{background:#1a100e;color:#d98273;border:1px solid #5c221a}
-.confetti{position:fixed;top:-6vh;z-index:60;pointer-events:none;animation:fall linear forwards}
+.stat{padding:6px;background:#0e0c0a}.stat small{font-size:.62rem;color:var(--muted);font-family:'Cinzel',serif;letter-spacing:1px}
+.stat b{display:block;font-size:1.8rem;line-height:1.1;font-family:'Cinzel',serif;color:var(--glow)}
+#hist{flex:1;min-height:0;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:5px;background:#080706}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;background:#121110;border:1px solid var(--border);font-size:.8rem;animation:rin .3s both}
+@keyframes rin{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+.chip{font-size:.62rem;font-family:'Cinzel',serif;font-weight:700;padding:2px 8px;letter-spacing:1px}
+.chip.ok{color:#8fd3a4;border:1px solid #2c5a3a}.chip.no{color:#d9806f;border:1px solid #5a1f1a}
+.cf{position:fixed;top:-6vh;z-index:60;pointer-events:none;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(112vh) rotate(360deg);opacity:0}}
-
 @media (orientation:landscape) and (max-height:560px){
- .setup{display:grid;grid-template-columns:minmax(180px,32%) 1fr;grid-template-areas:"hero themes" "time themes" "play themes";grid-template-rows:auto auto 1fr;column-gap:8px}
- .hero{grid-area:hero;padding-top:0}.pick{grid-area:themes}.timebox{grid-area:time}.playbox{grid-area:play;align-self:end}
- .hero .logo{width:32px;height:32px;font-size:.9rem}
- h1{font-size:1.1rem}.sub{display:none}
- .themes{grid-template-columns:repeat(2,1fr);gap:4px}
- .tile{padding:3px 6px}.ico{width:22px;height:22px;font-size:.65rem}
- .play{padding:8px;font-size:1rem}
- #game-screen{grid-template-columns:clamp(96px,17vw,150px) 1fr clamp(96px,17vw,150px);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"skip bar ok" "skip word ok"}
- #word-display{font-size:clamp(2rem,14vh,3.8rem)}
- .p-only{display:none}.l-only{display:inline}
- .result{display:grid;grid-template-columns:minmax(190px,36%) 1fr;grid-template-areas:"top list" "btn list";grid-template-rows:1fr auto;column-gap:10px}
- .top{grid-area:top}.listbox{grid-area:list}.btnbox{grid-area:btn}
- .top .logo{width:32px;height:32px;font-size:.8rem}
- .top h2{font-size:1rem!important}.top .sub{display:none}
- .stats{margin-top:4px}.stat b{font-size:1.2rem}
- #countdown-number { font-size: clamp(4rem, 22vh, 8rem); }
- .hint { font-size: 0.65rem; padding: 4px 8px; margin-top: 4px; }
-}
+.setup{display:grid;grid-template-columns:minmax(180px,32%) 1fr;grid-template-areas:"hero themes" "time themes" "play themes";grid-template-rows:auto auto 1fr;column-gap:8px}
+.hero{grid-area:hero}.pick{grid-area:themes}.timebox{grid-area:time}.playbox{grid-area:play;align-self:end}
+.logo{font-size:1.2rem}h1{font-size:1.1rem}.sub{display:none}.tile{padding:3px 6px}.ico{width:22px;height:22px}.play{padding:8px;font-size:1rem}
+#game{grid-template-columns:clamp(96px,17vw,150px) 1fr clamp(96px,17vw,150px);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"skip bar ok" "skip word ok"}
+#word{font-size:clamp(2rem,14vh,3.8rem)}.p{display:none}.l{display:inline}#fb{top:18%}
+.result{display:grid;grid-template-columns:minmax(190px,36%) 1fr;grid-template-areas:"top list" "btn list";grid-template-rows:1fr auto;column-gap:10px}
+.top{grid-area:top}.listbox{grid-area:list}.btnbox{grid-area:btn}.top h2{font-size:1rem!important}.top .sub{display:none}.stat b{font-size:1.2rem}
+#cdn{font-size:clamp(4rem,22vh,8rem)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body onclick="tryStartBGM()">
-<button id="fs-btn" onclick="event.stopPropagation();toggleFullScreen()" aria-label="Tela cheia"><i id="fs-icon" class="fa-solid fa-expand"></i></button>
+<button id="fs-btn" onclick="event.stopPropagation();toggleFS()" aria-label="Fullscreen">⛶</button>
 
-<!-- 1. MENU -->
-<div id="setup-screen" class="screen bg-souls">
- <div class="setup">
-  <div class="hero">
-   <div class="logo"><i class="fa-solid fa-skull"></i></div>
-   <h1>Souls Guess</h1>
-   <p class="sub">O celular na testa, o mundo em cinzas...</p>
-   <div class="opts">
-    <button id="opt-sound" class="opt" onclick="event.stopPropagation();toggleOpt('sound')"><i class="fa-solid fa-volume-high"></i> Efeitos</button>
-    <button id="opt-music" class="opt" onclick="event.stopPropagation();toggleOpt('music')"><i class="fa-solid fa-music"></i> Trilha</button>
-    <button id="opt-tilt" class="opt" onclick="event.stopPropagation();toggleOpt('tilt')"><i class="fa-solid fa-mobile-screen"></i> Giroscópio</button>
-    <button id="opt-touch" class="opt" onclick="event.stopPropagation();toggleOpt('touch')"><i class="fa-solid fa-hand-pointer"></i> Toque</button>
-   </div>
-  </div>
-  <div class="pick">
-   <p class="lbl"><i class="fa-solid fa-fire"></i> Escolha o Domínio</p>
-   <div class="themes-wrapper"><div id="themes-container" class="themes"></div></div>
-  </div>
-  <div class="timebox">
-   <p class="lbl"><i class="fa-solid fa-hourglass-half"></i> Tempo de Provação</p>
-   <div class="times">
-    <button class="time-btn" data-time="30" onclick="event.stopPropagation();setTime(30)">30s</button>
-    <button class="time-btn" data-time="60" onclick="event.stopPropagation();setTime(60)">1 min</button>
-    <button class="time-btn" data-time="90" onclick="event.stopPropagation();setTime(90)">1m30</button>
-    <button class="time-btn" data-time="120" onclick="event.stopPropagation();setTime(120)">2 min</button>
-   </div>
-  </div>
-  <div class="playbox"><button class="btn play" onclick="event.stopPropagation();startCountdown()"><i class="fa-solid fa-fire"></i> Acender Fogueira</button></div>
- </div>
-</div>
+<div id="setup" class="screen bg"><div class="setup">
+ <div class="hero"><div class="logo">💀</div><h1>SOULS GUESS</h1>
+  <p class="sub">Phone on your forehead. The world in ashes...</p>
+  <div class="opts">
+   <button id="o-sound" class="opt" onclick="event.stopPropagation();toggleOpt('sound')"></button>
+   <button id="o-music" class="opt" onclick="event.stopPropagation();toggleOpt('music')"></button>
+   <button id="o-tilt" class="opt" onclick="event.stopPropagation();toggleOpt('tilt')"></button>
+   <button id="o-touch" class="opt" onclick="event.stopPropagation();toggleOpt('touch')"></button>
+  </div></div>
+ <div class="pick"><p class="lbl">🔥 Choose Your Realm</p><div class="tw"><div id="themes" class="themes"></div></div></div>
+ <div class="timebox"><p class="lbl">⏳ Trial Duration</p>
+  <div class="times">
+   <button class="tb" data-t="30" onclick="event.stopPropagation();setTime(30)">30s</button>
+   <button class="tb" data-t="60" onclick="event.stopPropagation();setTime(60)">1:00</button>
+   <button class="tb" data-t="90" onclick="event.stopPropagation();setTime(90)">1:30</button>
+   <button class="tb" data-t="120" onclick="event.stopPropagation();setTime(120)">2:00</button>
+  </div></div>
+ <div class="playbox"><button class="btn play" onclick="event.stopPropagation();startCountdown()">Light the Bonfire</button></div>
+</div></div>
 
-<!-- 2. CONTAGEM -->
-<div id="countdown-screen" class="screen bg-souls hidden">
- <div class="countdown-content">
-  <p class="countdown-title">Prepare-se para morrer...</p>
-  <div id="countdown-number">3</div>
-  <div class="hint" id="hint"></div>
- </div>
-</div>
+<div id="cd" class="screen bg hidden"><div class="cdc">
+ <p class="cdt">PREPARE TO DIE...</p><div id="cdn">3</div><div class="hint" id="hint"></div>
+</div></div>
 
-<!-- 3. JOGO -->
-<div id="game-screen" class="screen bg-souls hidden">
- <div id="flash"></div>
- <div id="fb"></div>
+<div id="game" class="screen bg hidden">
+ <div id="flash"></div><div id="fb"></div>
  <div class="bar">
-  <div id="timer-box" class="pill"><i class="fa-solid fa-hourglass"></i><span id="timer-display">60</span>s</div>
-  <div id="score-box" class="pill"><i class="fa-solid fa-skull" style="color:var(--gold)"></i><span id="live-score">0</span></div>
-  <button class="x" onclick="endGame()" aria-label="Desistir"><i class="fa-solid fa-xmark"></i></button>
+  <div id="tbox" class="pill">⏳ <span id="timer">60</span>s</div>
+  <div id="sbox" class="pill">💀 <span id="score">0</span></div>
+  <button class="x" onclick="endGame()" aria-label="Give up">✕</button>
  </div>
- <div class="wordbox" onclick="handleCorrectClick()">
-  <span id="current-theme-label" class="tag">Domínio</span>
-  <h2 id="word-display">...</h2>
+ <div class="wb" onclick="if(touchOn)handleCorrect()">
+  <span id="theme-tag" class="tag"></span><h2 id="word">...</h2>
  </div>
- <button class="btn act skip" onclick="event.stopPropagation();handleSkip()">
-  <i class="fa-solid fa-arrow-up p-only"></i><i class="fa-solid fa-arrow-left l-only"></i>Recuar (Pular)
- </button>
- <button class="btn act ok" onclick="event.stopPropagation();handleCorrect()">
-  <i class="fa-solid fa-arrow-down p-only"></i><i class="fa-solid fa-arrow-right l-only"></i>Vencer (Acertou)
- </button>
+ <button class="btn act skip" onclick="event.stopPropagation();handleSkip()"><span class="p">▲</span><span class="l">◀</span>RETREAT (Skip)</button>
+ <button class="btn act ok" onclick="event.stopPropagation();handleCorrect()"><span class="p">▼</span><span class="l">▶</span>TRIUMPH (Got it)</button>
 </div>
 
-<!-- 4. RESULTADO -->
-<div id="result-screen" class="screen bg-souls hidden">
- <div class="result">
-  <div class="top">
-   <div class="logo"><i class="fa-solid fa-fire"></i></div>
-   <h2 id="res-title" style="margin:2px 0 0;font-size:1.4rem;font-family:'Cinzel',serif;color:var(--gold-glow)">Vítima do Destino</h2>
-   <p class="sub" id="res-sub">Sua jornada ecoa nas cinzas...</p>
-   <div class="stats">
-    <div class="card stat"><small>Desafios Vencidos</small><b id="res-correct" style="color:#73d9a6">0</b></div>
-    <div class="card stat"><small>Recuos</small><b id="res-skipped" style="color:#d98273">0</b></div>
-   </div>
+<div id="result" class="screen bg hidden"><div class="result">
+ <div class="top">
+  <div class="logo">🔥</div>
+  <h2 id="r-title" style="margin:2px 0 0;font-size:1.4rem;font-family:'Cinzel',serif;color:var(--glow);letter-spacing:3px"></h2>
+  <p class="sub" id="r-sub"></p>
+  <div class="stats">
+   <div class="card stat"><small>FOES FELLED</small><b id="r-ok" style="color:#8fd3a4">0</b></div>
+   <div class="card stat"><small>DEATHS</small><b id="r-no" style="color:#d9806f">0</b></div>
   </div>
-  <div class="listbox">
-   <p class="lbl"><i class="fa-solid fa-scroll"></i> Relato das Almas</p>
-   <div id="word-history" class="card"></div>
-  </div>
-  <div class="btnbox"><button class="btn play" onclick="returnToMenu()"><i class="fa-solid fa-rotate-right"></i> Retornar à Fogueira</button></div>
  </div>
-</div>
+ <div class="listbox"><p class="lbl">📜 Chronicle of Souls</p><div id="hist" class="card"></div></div>
+ <div class="btnbox"><button class="btn play" onclick="returnToMenu()">Return to the Bonfire</button></div>
+</div></div>
 
 <script>
 const $=id=>document.getElementById(id);
-
 let soundOn=true,musicOn=true,tiltOn=true,touchOn=true,tiltActive=false,tiltListening=false,tiltArmed=false;
 const tiltSupported='DeviceOrientationEvent' in window;
 
 function refreshOpts(){
- $('opt-sound').classList.toggle('on',soundOn);
- $('opt-sound').innerHTML=`<i class="fa-solid ${soundOn?'fa-volume-high':'fa-volume-xmark'}"></i> Efeitos`;
- 
- $('opt-music').classList.toggle('on',musicOn);
- $('opt-music').innerHTML=`<i class="fa-solid ${musicOn?'fa-music':'fa-volume-xmark'}"></i> Trilha`;
-
- $('opt-tilt').classList.toggle('on',tiltOn&&tiltSupported);
- $('opt-touch').classList.toggle('on',touchOn);
+ const set=(id,on,label)=>{$(id).classList.toggle('on',on);$(id).textContent=label};
+ set('o-sound',soundOn,(soundOn?'🔊':'🔇')+' Effects');
+ set('o-music',musicOn,(musicOn?'🎻':'🔇')+' Music');
+ set('o-tilt',tiltOn&&tiltSupported,'📱 Tilt');
+ set('o-touch',touchOn,'👆 Touch');
 }
-
 function toggleOpt(k){
- if(k==='sound'){ soundOn=!soundOn; }
- else if(k==='music'){
-  musicOn=!musicOn;
-  if(!musicOn) stopBGM();
-  else tryStartBGM();
- }
- else if(k==='tilt'){ tiltOn=!tiltOn; }
- else if(k==='touch'){ touchOn=!touchOn; }
- try{
-  localStorage.setItem('souls_sound',soundOn?'1':'0');
-  localStorage.setItem('souls_music',musicOn?'1':'0');
-  localStorage.setItem('souls_tilt',tiltOn?'1':'0');
-  localStorage.setItem('souls_touch',touchOn?'1':'0');
- }catch(e){}
- refreshOpts();
- playSound('click');
+ if(k==='sound')soundOn=!soundOn;
+ else if(k==='music'){musicOn=!musicOn;if(!musicOn)stopBGM();else tryStartBGM()}
+ else if(k==='tilt')tiltOn=!tiltOn;
+ else touchOn=!touchOn;
+ try{['sound','music','tilt','touch'].forEach(n=>localStorage.setItem('souls_'+n,({sound:soundOn,music:musicOn,tilt:tiltOn,touch:touchOn})[n]?'1':'0'))}catch(e){}
+ refreshOpts();playSound('click');
 }
 
-let audioCtx=null;
+/* ================= AUDIO ENGINE ================= */
+let ctx=null,master,verb,noiseBuf,bus=null,bgmT=null;
+const mf=m=>440*Math.pow(2,(m-69)/12);
 function initAudio(){
  try{
-  if(!audioCtx){
-   const AudioContextClass=window.AudioContext||window.webkitAudioContext;
-   audioCtx=new AudioContextClass();
+  if(!ctx){
+   ctx=new(window.AudioContext||window.webkitAudioContext)();
+   master=ctx.createDynamicsCompressor();master.connect(ctx.destination);
+   verb=ctx.createConvolver();
+   const L=Math.floor(ctx.sampleRate*3.5),ib=ctx.createBuffer(2,L,ctx.sampleRate);
+   for(let c=0;c<2;c++){const d=ib.getChannelData(c);for(let i=0;i<L;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/L,2.5)}
+   verb.buffer=ib;const vg=ctx.createGain();vg.gain.value=.75;verb.connect(vg);vg.connect(master);
+   noiseBuf=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate);
+   const n=noiseBuf.getChannelData(0);for(let i=0;i<n.length;i++)n[i]=Math.random()*2-1;
   }
-  if(audioCtx.state==='suspended'){ audioCtx.resume(); }
+  if(ctx.state==='suspended')ctx.resume();
  }catch(e){}
 }
-
-/* ==========================================
-   TRILHAS ÉPICAS / SOMBRIAS (ESTILO SOULS)
-   ========================================== */
-let bgmTimer=null;
-let currentBgmTrack=0;
-
-const NOTES = {
- C3:130.81, D3:146.83, E3:164.81, F3:174.61, G3:196.00, A3:220.00, B3:246.94,
- C4:261.63, CS4:277.18, D4:293.66, DS4:311.13, E4:329.63, F4:349.23, FS4:369.99,
- G4:392.00, GS4:415.30, A4:440.00, AS4:466.16, B4:493.88, C5:523.25, REST:0
+function env(t,a,d,v,rel){
+ const g=ctx.createGain();
+ g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+a);
+ g.gain.setValueAtTime(v,t+Math.max(a,d-rel));g.gain.exponentialRampToValueAtTime(.0001,t+d);
+ g.connect(bus);return g;
+}
+function voice(o){
+ const det=o.det||[0],g=env(o.t,o.a,o.d,o.v/det.length,o.rel);
+ const f=ctx.createBiquadFilter();f.type=o.ft||'lowpass';f.frequency.setValueAtTime(o.fc,o.t);f.Q.value=o.q||.7;
+ if(o.sw)f.frequency.linearRampToValueAtTime(o.sw,o.t+o.a+.3);
+ f.connect(g);
+ det.forEach(c=>{
+  const s=ctx.createOscillator();s.type=o.w;s.frequency.value=mf(o.m);s.detune.value=c;
+  if(o.vib){const l=ctx.createOscillator(),lg=ctx.createGain();l.frequency.value=5;lg.gain.value=o.vib;l.connect(lg);lg.connect(s.detune);l.start(o.t);l.stop(o.t+o.d+.1)}
+  s.connect(f);s.start(o.t);s.stop(o.t+o.d+.1);
+ });
+}
+function noise(t,d,v,fc,ft,a){
+ const s=ctx.createBufferSource();s.buffer=noiseBuf;
+ const f=ctx.createBiquadFilter();f.type=ft;f.frequency.value=fc;
+ const g=env(t,a||.005,d,v,d*.5);s.connect(f);f.connect(g);s.start(t);s.stop(t+d);
+}
+const I={
+ str:(m,t,d,v)=>voice({w:'sawtooth',m,t,d,v,a:.9,fc:1300,det:[-8,8],rel:1,vib:6}),
+ vln:(m,t,d,v)=>voice({w:'sawtooth',m,t,d,v,a:.12,fc:2600,det:[-5,5],rel:.25,vib:14}),
+ cel:(m,t,d,v)=>voice({w:'sawtooth',m,t,d,v,a:.06,fc:650,sw:950,det:[-4,4],rel:.15,vib:5}),
+ brs:(m,t,d,v)=>voice({w:'sawtooth',m,t,d,v,a:.3,fc:250,sw:1700,det:[-3,3],rel:.5}),
+ cho:(m,t,d,v)=>voice({w:'sawtooth',m,t,d,v,a:1.3,fc:900,q:3,ft:'bandpass',det:[-10,0,10],rel:1.2,vib:8}),
+ hrp:(m,t,v)=>voice({w:'triangle',m,t,d:1.8,v,a:.005,fc:3200,rel:1.7}),
+ bel:(m,t,v)=>[1,2.76,5.4].forEach((r,i)=>{
+  const s=ctx.createOscillator(),g=env(t,.003,5/(i+1),v/(i+1),5/(i+1));
+  s.frequency.value=mf(m)*r;s.connect(g);s.start(t);s.stop(t+6);
+ }),
+ tim:(t,v)=>{
+  const s=ctx.createOscillator(),g=env(t,.005,1.4,v,1.4);
+  s.frequency.setValueAtTime(95,t);s.frequency.exponentialRampToValueAtTime(48,t+.4);
+  s.connect(g);s.start(t);s.stop(t+1.5);noise(t,.09,v*.5,220,'lowpass');
+ }
 };
-
-const SOULS_TRACKS = [
- // 0: Menu Fogueira (Sombria, solene e misteriosa - inspirada em Firelink / Hub)
- {
-  tempo: 650,
-  notes: [
-   [NOTES.A3, 1.2], [NOTES.E4, 1.2], [NOTES.C4, 1.2], [NOTES.B3, 1.8],
-   [NOTES.A3, 1.2], [NOTES.F3, 1.2], [NOTES.E3, 1.2], [NOTES.REST, 1.0],
-   [NOTES.G3, 1.2], [NOTES.D4, 1.2], [NOTES.B3, 1.2], [NOTES.A3, 1.8],
-   [NOTES.F3, 1.2], [NOTES.E3, 1.2], [NOTES.D3, 1.2], [NOTES.REST, 1.0]
-  ]
- },
- // 1: Batalha Épica A (Tensa e grandiosa - Estilo Boss Theme / Gwyn / Erdtree)
- {
-  tempo: 320,
-  notes: [
-   [NOTES.A4, 0.4], [NOTES.E4, 0.4], [NOTES.F4, 0.4], [NOTES.E4, 0.4],
-   [NOTES.D4, 0.4], [NOTES.C4, 0.4], [NOTES.B3, 0.8], [NOTES.A3, 0.8],
-   [NOTES.D4, 0.4], [NOTES.F4, 0.4], [NOTES.A4, 0.4], [NOTES.G4, 0.4],
-   [NOTES.F4, 0.8], [NOTES.E4, 0.8], [NOTES.REST, 0.4]
-  ]
- },
- // 2: Batalha Épica B (Sombria e marcante - Estilo Bloodborne / Dark Souls 3)
- {
-  tempo: 380,
-  notes: [
-   [NOTES.E4, 0.6], [NOTES.GS4, 0.6], [NOTES.B4, 0.6], [NOTES.C5, 0.6],
-   [NOTES.B4, 0.6], [NOTES.GS4, 0.6], [NOTES.E4, 1.2],
-   [NOTES.A4, 0.6], [NOTES.C5, 0.6], [NOTES.E5, 0.6], [NOTES.DS5, 0.6],
-   [NOTES.C5, 0.6], [NOTES.B4, 0.6], [NOTES.A4, 1.2], [NOTES.REST, 0.6]
-  ]
- }
+const Q={m:[0,3,7],M:[0,4,7],d:[0,3,6],5:[0,7,12]};
+const MEL_A=[[3,-1,-1,4,2,-1,0,-1],[5,-1,4,-1,3,-1,-1,-1],[2,-1,3,-1,4,-1,5,-1],[4,-1,-1,-1,2,-1,1,-1]];
+const MEL_B=[[1,-1,-1,-1,2,-1,-1,-1],[3,-1,-1,2,-1,-1,1,-1],[4,-1,-1,-1,-1,-1,3,-1],[2,-1,1,-1,-1,-1,0,-1]];
+const mk=(P,Is)=>Is.map((x,i)=>[P[i%P.length][0],P[i%P.length][1],x]);
+const TR=[
+ /* 0 - Bonfire (menu): calm, harp + choir + bells, ~70s */
+ {bpm:54,menu:true,mel:null,bars:mk([[45,'m'],[41,'M'],[48,'M'],[43,'M'],[45,'m'],[41,'M'],[40,'M'],[45,'m']],Array(16).fill(0))},
+ /* 1 - Lords of Cinder (D minor, march, ~107s) */
+ {bpm:72,mel:MEL_A,bars:mk([[50,'m'],[50,'m'],[46,'M'],[57,'M'],[50,'m'],[50,'m'],[55,'m'],[57,'M'],[46,'M'],[53,'M'],[48,'M'],[57,'M'],[50,'m'],[55,'m'],[57,'M'],[50,5]],
+  [0,0,1,1,1,1,2,2,2,2,2,2,3,3,3,2,1,1,2,2,2,2,3,3,3,3,3,3,2,2,1,0])},
+ /* 2 - The Abyss Watches (phrygian, slow dread, ~132s) */
+ {bpm:58,mel:MEL_B,bars:mk([[40,'m'],[41,'M'],[40,'m'],[47,'d'],[45,'m'],[41,'M'],[43,'M'],[40,5]],
+  [0,0,1,1,1,2,2,2,2,2,3,3,2,2,3,3,1,1,2,2,3,3,3,3,2,2,3,3,3,2,1,0])}
 ];
-
-function playBgmNote(freq, duration, volume=0.015){
- if(!musicOn||!audioCtx)return;
- try{
-  if(audioCtx.state==='suspended')audioCtx.resume();
-  if(freq===0)return;
-  const t0=audioCtx.currentTime;
-  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-  o.type='triangle'; // Timbre mais encorpado, lembrando alaúde/órgão sutil
-  o.frequency.setValueAtTime(freq,t0);
-  
-  g.gain.setValueAtTime(0.0001, t0);
-  g.gain.linearRampToValueAtTime(volume, t0 + 0.1);
-  g.gain.exponentialRampToValueAtTime(0.0001, t0 + duration);
-
-  o.connect(g);g.connect(audioCtx.destination);
-  o.start(t0);o.stop(t0+duration+.05);
- }catch(e){}
-}
-
-function startBGM(trackIndex=0){
- stopBGM();
- if(!musicOn)return;
- initAudio();
- currentBgmTrack=trackIndex;
- let noteIndex=0;
- const track=SOULS_TRACKS[currentBgmTrack];
-
- bgmTimer=setInterval(()=>{
-  if(!musicOn||!isPlayingMenuOrGame())return;
-  const currentNote=track.notes[noteIndex];
-  playBgmNote(currentNote[0], currentNote[1]*0.9, 0.014);
-  noteIndex=(noteIndex+1)%track.notes.length;
- },track.tempo);
-}
-
-function stopBGM(){
- if(bgmTimer){clearInterval(bgmTimer);bgmTimer=null;}
-}
-
-function isPlayingMenuOrGame(){
- return !$('setup-screen').classList.contains('hidden') || isPlaying;
-}
-
-function tryStartBGM(){
- if(musicOn && !bgmTimer && $('setup-screen').classList.contains('hidden')==false){
-  startBGM(0);
+function playStep(tr,k,t){
+ const e=60/tr.bpm/2,s=k%8,bi=Math.floor(k/8)%tr.bars.length;
+ const [r,q,iv]=tr.bars[bi],nx=tr.bars[(bi+1)%tr.bars.length][2];
+ const c=Q[q],ext=c.concat(c.map(x=>x+12));
+ if(s===0){
+  c.forEach(x=>I.str(r+12+x,t,e*8,[.05,.07,.08,.09][iv]));
+  I.cel(r-(r>44?12:0),t,e*8,.07);
+  if(bi%4===0)I.bel(r+36,t,.05);
+  if(tr.menu&&bi%2===1)c.forEach(x=>I.cho(r+12+x,t,e*8,.12));
+ }
+ if(tr.menu)I.hrp(r+12+ext[[0,1,2,3,2,1,2,4][s]],t,.07);
+ else{
+  if(iv>=1&&(s%2===0||iv>=2))I.cel(r+[0,0,0,7,0,0,3,5][s],t,e*.9,.06+.01*iv);
+  if(iv>=1&&s===0)I.tim(t,.35);
+  if(iv>=2&&s===4)I.tim(t,.5);
+  if(iv>=3&&(s===2||s===6))I.tim(t,.3);
+  const p=iv>=2?tr.mel[bi%4][s]:-1;if(p>=0)I.vln(r+24+ext[p],t,e*2.4,.07);
+  if(iv>=3&&(s===0||s===4))[0,7].forEach(x=>I.brs(r+x,t,e*3.5,.09));
+  if(iv>=3&&s===0)c.forEach(x=>I.cho(r+12+x,t,e*8,.12));
+  if(nx>iv&&s===4)noise(t,e*4,.06,2200,'bandpass',e*3.6);
  }
 }
+function startBGM(i){
+ stopBGM();if(!musicOn)return;initAudio();if(!ctx)return;
+ const tr=TR[i],mine=ctx.createGain();mine.gain.value=.85;mine.connect(master);mine.connect(verb);
+ bus=mine;let step=0,nt=ctx.currentTime+.15;
+ bgmT=setInterval(()=>{
+  if(!musicOn||bus!==mine)return;
+  if(ctx.state==='suspended')ctx.resume();
+  while(nt<ctx.currentTime+.4){playStep(tr,step,nt);nt+=60/tr.bpm/2;step++}
+ },100);
+}
+function stopBGM(){
+ if(bgmT){clearInterval(bgmT);bgmT=null}
+ if(bus&&ctx){const b=bus;try{b.gain.cancelScheduledValues(ctx.currentTime);b.gain.setValueAtTime(b.gain.value,ctx.currentTime);b.gain.linearRampToValueAtTime(0,ctx.currentTime+.5)}catch(e){}setTimeout(()=>{try{b.disconnect()}catch(e){}},900)}
+ bus=null;
+}
+function tryStartBGM(){if(musicOn&&!bgmT&&!$('setup').classList.contains('hidden'))startBGM(0)}
 
 const SOUNDS={
- correct:[[523,0,.15,'triangle',.25],[659,.12,.2,'triangle',.25],[784,.24,.3,'triangle',.3]],
- skip:[[180,0,.15,'sawtooth',.15,120],[130,.12,.2,'sawtooth',.12,90]],
- combo:[[659,0,.1,'triangle',.3],[830,.1,.1,'triangle',.3],[987,.2,.15,'triangle',.3],[1318,.3,.35,'triangle',.35]],
- beep:[[440,0,.1,'sine',.2]],
- start:[[330,0,.15,'triangle',.3],[440,.15,.3,'triangle',.35]],
- tick:[[500,0,.05,'square',.08]],
- tick3:[[800,0,.09,'square',.12]],
- click:[[300,0,.08,'sine',.15,450]],
- armed:[[440,0,.08,'triangle',.15],[660,.08,.12,'triangle',.15]],
- buzz:[[110,0,.5,'sawtooth',.2,70]],
- win:[[440,0,.2,'triangle',.3],[554,.2,.2,'triangle',.3],[659,.4,.2,'triangle',.3],[880,.6,.5,'triangle',.35]],
- lose:[[220,0,.3,'sawtooth',.25],[185,.3,.3,'sawtooth',.25],[146,.6,.6,'sawtooth',.25]]
+ correct:[[392,0,.9,'triangle',.18],[587,.05,1,'triangle',.15],[784,.1,1.2,'sine',.14]],
+ skip:[[70,0,1.4,'sawtooth',.22,40],[55,0,1.6,'sine',.3,38]],
+ combo:[[523,0,.5,'triangle',.2],[659,.12,.5,'triangle',.2],[784,.24,.6,'triangle',.2],[1047,.36,1,'sine',.2]],
+ beep:[[440,0,.1,'sine',.2]],start:[[330,0,.2,'triangle',.3],[220,.15,.6,'sawtooth',.2]],
+ tick:[[500,0,.05,'square',.06]],tick3:[[800,0,.09,'square',.1]],click:[[300,0,.08,'sine',.15,450]],
+ armed:[[440,0,.08,'triangle',.15],[660,.08,.12,'triangle',.15]],buzz:[[110,0,.8,'sawtooth',.2,50]],
+ win:[[294,0,.8,'triangle',.25],[440,.3,.8,'triangle',.25],[587,.6,1.4,'triangle',.28]],
+ lose:[[110,0,1.2,'sawtooth',.22,60],[82,.5,2,'sawtooth',.22,41]]
 };
-
 function playSound(type){
  if(!soundOn)return;
  try{
-  initAudio();
-  if(!audioCtx)return;
-  const seq=SOUNDS[type];if(!seq)return;
-  const t0=audioCtx.currentTime;
+  initAudio();const seq=SOUNDS[type];if(!ctx||!seq)return;const t0=ctx.currentTime;
   seq.forEach(([f,s,d,w,v,f2])=>{
-   const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-   o.type=w;o.connect(g);g.connect(audioCtx.destination);
-   o.frequency.setValueAtTime(f,t0+s);
-   if(f2)o.frequency.linearRampToValueAtTime(f2,t0+s+d);
-   g.gain.setValueAtTime(v,t0+s);
-   g.gain.exponentialRampToValueAtTime(.001,t0+s+d);
-   o.start(t0+s);o.stop(t0+s+d+.02);
+   const o=ctx.createOscillator(),g=ctx.createGain();o.type=w;o.connect(g);g.connect(master);
+   o.frequency.setValueAtTime(f,t0+s);if(f2)o.frequency.linearRampToValueAtTime(f2,t0+s+d);
+   g.gain.setValueAtTime(v,t0+s);g.gain.exponentialRampToValueAtTime(.001,t0+s+d);o.start(t0+s);o.stop(t0+s+d+.02);
   });
  }catch(e){}
 }
-function vibrate(p){try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}}
-
-function toggleFullScreen(){
+function vibrate(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
+function toggleFS(){
  const el=document.documentElement;
- if(!document.fullscreenElement&&!document.webkitFullscreenElement){
-  const r=el.requestFullscreen||el.webkitRequestFullscreen;
-  if(r){const p=r.call(el);if(p&&p.catch)p.catch(()=>{})}
- }else{const x=document.exitFullscreen||document.webkitExitFullscreen;if(x)x.call(document)}
+ if(!document.fullscreenElement&&!document.webkitFullscreenElement){const r=el.requestFullscreen||el.webkitRequestFullscreen;if(r){const p=r.call(el);if(p&&p.catch)p.catch(()=>{})}}
+ else{const x=document.exitFullscreen||document.webkitExitFullscreen;if(x)x.call(document)}
 }
-function updateFsIcon(){
- const on=document.fullscreenElement||document.webkitFullscreenElement;
- document.getElementById('fs-icon').className=on?'fa-solid fa-compress':'fa-solid fa-expand';
-}
-document.addEventListener('fullscreenchange',updateFsIcon);
-document.addEventListener('webkitfullscreenchange',updateFsIcon);
-
 let wakeLock=null;
-async function requestWakeLock(){try{if('wakeLock' in navigator)wakeLock=await navigator.wakeLock.request('screen')}catch(e){}}
-function releaseWakeLock(){try{if(wakeLock)wakeLock.release()}catch(e){}wakeLock=null}
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&isPlaying)requestWakeLock()});
+async function reqWake(){try{if('wakeLock' in navigator)wakeLock=await navigator.wakeLock.request('screen')}catch(e){}}
+function relWake(){try{if(wakeLock)wakeLock.release()}catch(e){}wakeLock=null}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&isPlaying)reqWake()});
 
 async function enableTilt(){
  if(!tiltSupported||!tiltOn)return false;
  try{
-  if(typeof DeviceOrientationEvent.requestPermission==='function'){
-   const r=await DeviceOrientationEvent.requestPermission();
-   if(r!=='granted')return false;
-  }
+  if(typeof DeviceOrientationEvent.requestPermission==='function'){const r=await DeviceOrientationEvent.requestPermission();if(r!=='granted')return false}
   if(!tiltListening){window.addEventListener('deviceorientation',onTilt);tiltListening=true}
   return true;
  }catch(e){return false}
 }
 function onTilt(e){
- if(e.beta==null||e.gamma==null)return;
- if(!isPlaying||!tiltActive)return;
- const b=e.beta*Math.PI/180,g=e.gamma*Math.PI/180;
- const z=Math.cos(g)*Math.cos(b);
- if(!tiltArmed){
-  if(Math.abs(z)<0.3){tiltArmed=true;playSound('armed')}
-  return;
- }
- if(z<-0.55){tiltArmed=false;handleCorrect()}
- else if(z>0.55){tiltArmed=false;handleSkip()}
+ if(e.beta==null||e.gamma==null||!isPlaying||!tiltActive)return;
+ const b=e.beta*Math.PI/180,g=e.gamma*Math.PI/180,z=Math.cos(g)*Math.cos(b);
+ if(!tiltArmed){if(Math.abs(z)<.3){tiltArmed=true;playSound('armed')}return}
+ if(z<-.55){tiltArmed=false;handleCorrect()}else if(z>.55){tiltArmed=false;handleSkip()}
 }
 
+/* ================= DATA ================= */
 const W=s=>s.split('|');
-
-/* ==========================================
-   BASES DE DADOS SEPARADAS POR JOGO E TEMA
-   ========================================== */
 const themes={
- ds1_bosses:{name:"Chefes: Dark Souls 1",icon:"fa-skull-crossbones",words:W("Gwyn, Lord of Cinder|Ornstein e Smough|Artorias the Abyssal Walker|Manus, Father of the Abyss|Gwyndolin|Seath the Scaleless|Bed of Chaos|Capra Demon|Taurus Demon|Iron Golem|Stray Demon|Queelag|Gaping Dragon|Sanctuary Guardian|Kalameet|Four Kings|Pinwheel|Moonlight Butterfly|Asylum Demon")},
- ds3_bosses:{name:"Chefes: Dark Souls 3",icon:"fa-fire",words:W("Slave Knight Gael|Soul of Cinder|Nameless King|Abyss Watchers|Sister Friede|Yhorm the Giant|Aldrich|Pontiff Sulyvahn|Dancer of the Boreal Valley|Deacons of the Deep|Crystal Sage|High Lord Wolnir|Old Demon King|Oceiros|Champion Gundyr|Lorian e Lothric|Vordt of the Boreal Valley|Iudex Gundyr|Ancient Wyvern|Soul of Cinder")},
- er_bosses:{name:"Chefes: Elden Ring",icon:"fa-crown",words:W("Malenia, Blade of Miquella|Radahn, Starscourge|Godrick the Grafted|Rennala|Margit, the Fell Omen|Godfrey, First Elden Lord|Radagon of the Golden Order|Elden Beast|Mohg, Lord of Blood|Morgott|Fire Giant|Dragonlord Placidusax|Maliketh|Astel|Rykard|Ancestor Spirit|Godskin Apostle|Commander Niall|Loretta|Valiant Gargoyles")},
- bb_bosses:{name:"Chefes: Bloodborne",icon:"fa-moon",words:W("Orphan of Kos|Ludwig, the Holy Blade|Lady Maria|Gehrman, the First Hunter|Father Gascoigne|Cleric Beast|Blood-starved Beast|Vicar Amelia|The Shadow of Yharnam|Rom, the Vacuous Spider|The One Reborn|Micolash|Mergo's Wet Nurse|Amygdala|Ebrietas|Martyr Logarius|Celestial Emissary|Pthumerian Descendant|Laurence")},
- se_bosses:{name:"Chefes: Sekiro",icon:"fa-dharmachakra",words:W("Isshin, the Sword Saint|Genichiro Ashina|Owl (Father)|Demon of Hatred|Lady Butterfly|Guardian Ape|Corrupted Monk|Gyuou Masataka|Folding Screen Monkeys|Great Serpent|Great Shinobi Owl|True Corrupted Monk|Emma, the Gentle Blade|Doppelganger|Shichimen Warrior|Headless|Lone Shadow")},
- ds1_weapons:{name:"Armas: Dark Souls 1",icon:"fa-sword",words:W("Zweihander|Claymore|Halberd|Balder Side Sword|Uchigatana|Quelaag's Furysword|Moonlight Greatsword|Black Knight Sword|Black Knight Halberd|Great Club|Smough's Hammer|Grant|Bastard Sword|Estoc|Rapier|Spear|Gargoyle's Halberd|Lifehunt Scythe|Dragon Greatsword|Manus Catalyst")},
- ds3_weapons:{name:"Armas: Dark Souls 3",icon:"fa-khanda",words:W("Frayed Blade|Ringed Knight Paired Greatswords|Ledo's Great Hammer|Gael's Greatsword|Astora Greatsword|Sellsword Twinblades|Drang Hammers|Onikiri and Ubadachi|Farron Greatsword|Profaned Greatsword|Lothric Knight Sword|Black Knight Sword|Anri's Straight Sword|Demon's Fist|Washing Pole|Chaos Blade")},
- er_weapons:{name:"Armas: Elden Ring",icon:"fa-staff",words:W("Rivers of Blood|Moonveil|Blasphemous Blade|Starscourge Greatsword|Ruins Greatsword|Godslayer's Greatsword|Bolt of Gransax|Eleonora's Poleblade|Reduvia|Morgott's Cursed Sword|Mohgwyn's Sacred Spear|Magma Wyrm Scalesword|Carian Regal Scepter|Staff of the Loss|Finger Seal|Iron Greatsword|Uchigatana")},
- bb_weapons:{name:"Armas: Bloodborne",icon:"fa-sickle",words:W("Hunter Axe|Ludwig's Holy Blade|Saw Cleaver|Saw Spear|Kirkhammer|Beast Hunter Saif|Whirligig Saw|Rakuyo|Simon's Bowblade|Chikage|Burial Blade|Blades of Mercy|Stake Driver|Boom Hammer|Holy Moonlight Sword|Logarius' Wheel|Amygdalan Arm|Kos Parasite")},
- souls_npcs:{name:"NPCs & Icones",icon:"fa-user-ninja",words:W("Solaire of Astora|Siegmeyer of Catarina|Patchs|The Emerald Herald|Fire Keeper|Andre of Astora|Blacksmith Andrei|Anri of Astora|Greirat of the Undead Settlement|Ludleth of Courland|Emma, High Priestess|Ranni the Witch|Blaidd|Alexander, Iron Fist|Melina|Sorceress Sellen|Patches the Untethered|Doll (Bloodborne)|Plain Doll|Messenger|The Maiden in Black|St. Urbain|Laurentius of the Great Swamp")}
+ ds1_bosses:{name:"Bosses: Dark Souls",icon:"💀",words:W("Gwyn, Lord of Cinder|Ornstein & Smough|Artorias the Abysswalker|Manus, Father of the Abyss|Gwyndolin|Seath the Scaleless|Bed of Chaos|Capra Demon|Taurus Demon|Iron Golem|Stray Demon|Quelaag|Gaping Dragon|Sanctuary Guardian|Kalameet|Four Kings|Pinwheel|Moonlight Butterfly|Asylum Demon|Priscilla")},
+ ds3_bosses:{name:"Bosses: Dark Souls III",icon:"🔥",words:W("Slave Knight Gael|Soul of Cinder|Nameless King|Abyss Watchers|Sister Friede|Yhorm the Giant|Aldrich, Devourer of Gods|Pontiff Sulyvahn|Dancer of the Boreal Valley|Deacons of the Deep|Crystal Sage|High Lord Wolnir|Old Demon King|Oceiros|Champion Gundyr|Lorian & Lothric|Vordt of the Boreal Valley|Iudex Gundyr|Ancient Wyvern|Dragonslayer Armour")},
+ er_bosses:{name:"Bosses: Elden Ring",icon:"👑",words:W("Malenia, Blade of Miquella|Radahn, Starscourge|Godrick the Grafted|Rennala|Margit, the Fell Omen|Godfrey, First Elden Lord|Radagon of the Golden Order|Elden Beast|Mohg, Lord of Blood|Morgott|Fire Giant|Dragonlord Placidusax|Maliketh|Astel|Rykard|Ancestor Spirit|Godskin Apostle|Commander Niall|Loretta|Valiant Gargoyles")},
+ bb_bosses:{name:"Bosses: Bloodborne",icon:"🌙",words:W("Orphan of Kos|Ludwig, the Holy Blade|Lady Maria|Gehrman, the First Hunter|Father Gascoigne|Cleric Beast|Blood-starved Beast|Vicar Amelia|The Shadow of Yharnam|Rom, the Vacuous Spider|The One Reborn|Micolash|Mergo's Wet Nurse|Amygdala|Ebrietas|Martyr Logarius|Celestial Emissary|Pthumerian Descendant|Laurence")},
+ se_bosses:{name:"Bosses: Sekiro",icon:"🥷",words:W("Isshin, the Sword Saint|Genichiro Ashina|Divine Dragon|Demon of Hatred|Lady Butterfly|Guardian Ape|Corrupted Monk|Gyoubu Oniwa|Folding Screen Monkeys|Great Serpent|Great Shinobi Owl|True Monk|Emma, the Gentle Blade|Armored Warrior|Shichimen Warrior|Headless|Lone Shadow")},
+ ds1_weapons:{name:"Weapons: Dark Souls",icon:"⚔️",words:W("Zweihander|Claymore|Halberd|Balder Side Sword|Uchigatana|Quelaag's Furysword|Moonlight Greatsword|Black Knight Sword|Black Knight Halberd|Great Club|Smough's Hammer|Grant|Greatsword of Artorias|Estoc|Rapier|Dragon Greatsword|Lifehunt Scythe|Manus Catalyst")},
+ ds3_weapons:{name:"Weapons: Dark Souls III",icon:"🗡️",words:W("Frayed Blade|Ringed Knight Paired Greatswords|Ledo's Great Hammer|Gael's Greatsword|Astora Greatsword|Sellsword Twinblades|Drang Hammers|Onikiri and Ubadachi|Farron Greatsword|Profaned Greatsword|Lothric Knight Sword|Black Knight Sword|Anri's Straight Sword|Demon's Fist|Washing Pole|Chaos Blade")},
+ er_weapons:{name:"Weapons: Elden Ring",icon:"🔮",words:W("Rivers of Blood|Moonveil|Blasphemous Blade|Starscourge Greatsword|Ruins Greatsword|Godslayer's Greatsword|Bolt of Gransax|Eleonora's Poleblade|Reduvia|Morgott's Cursed Sword|Mohgwyn's Sacred Spear|Magma Wyrm Scalesword|Carian Regal Scepter|Staff of the Loss|Finger Seal|Dark Moon Greatsword")},
+ bb_weapons:{name:"Weapons: Bloodborne",icon:"🪓",words:W("Hunter Axe|Ludwig's Holy Blade|Saw Cleaver|Saw Spear|Kirkhammer|Beast Hunter Saif|Whirligig Saw|Rakuyo|Simon's Bowblade|Chikage|Burial Blade|Blades of Mercy|Stake Driver|Boom Hammer|Holy Moonlight Sword|Logarius' Wheel|Amygdalan Arm|Threaded Cane")},
+ npcs:{name:"NPCs & Icons",icon:"👤",words:W("Solaire of Astora|Siegmeyer of Catarina|Patches the Untethered|The Emerald Herald|Fire Keeper|Andre of Astora|Anri of Astora|Greirat of the Undead Settlement|Ludleth of Courland|Ranni the Witch|Blaidd the Half-Wolf|Alexander, Iron Fist|Melina|Sorceress Sellen|The Doll|Plain Doll|The Messenger|Maiden in Black|Saint Urbain|Laurentius of the Great Swamp")}
 };
-
 Object.values(themes).forEach(t=>{const seen=new Set();t.words=t.words.filter(w=>{const k=w.toLowerCase();if(seen.has(k))return false;seen.add(k);return true})});
-themes.souls_misto={name:"Misto: Todos os Mundos",icon:"fa-fire-flame-curved",words:[...new Set(Object.values(themes).flatMap(t=>t.words))]};
+themes.mixed={name:"Mixed: All Realms",icon:"♨️",words:[...new Set(Object.values(themes).flatMap(t=>t.words))]};
 
-let selectedTheme='ds1_bosses',gameTime=60,currentWords=[],currentIndex=0,scoreCorrect=0,scoreSkipped=0,streak=0,
- wordHistoryList=[],timerInterval=null,countdownTimeout=null,endTime=0,timeLeft=60,
- isPlaying=false,isCounting=false,lastAction=0,lastShownWord=null;
+const OK_MSG=['ENEMY FELLED','ENEMY FELLED','VICTORY ACHIEVED'];
+const STREAK_MSG=['GREAT ENEMY FELLED','HEIR OF FIRE DESTROYED','PREY SLAUGHTERED','LORD OF CINDER FALLEN'];
+
+let selectedTheme='ds1_bosses',gameTime=60,words=[],idx=0,nOk=0,nSkip=0,streak=0,hist=[],timerIv=null,cdT=null,endTime=0,timeLeft=60,isPlaying=false,isCounting=false,lastAction=0,lastWord=null;
 
 function loadPrefs(){try{
  const t=localStorage.getItem('souls_theme'),s=parseInt(localStorage.getItem('souls_time'),10);
@@ -467,128 +359,80 @@ function loadPrefs(){try{
 }catch(e){}}
 function savePrefs(){try{localStorage.setItem('souls_theme',selectedTheme);localStorage.setItem('souls_time',String(gameTime))}catch(e){}}
 
-function addEmbers(el){
- const em=['🔥','✨','💀','⚔️','🕯️','⭐','🩸'];
- for(let i=0;i<10;i++){
-  const s=document.createElement('span');s.className='bub';s.textContent=em[i%em.length];
-  s.style.position='absolute';s.style.bottom='-10%';
-  s.style.left=(Math.random()*96)+'%';s.style.fontSize=(14+Math.random()*18)+'px';
-  s.style.opacity='0.3';s.style.animation=`rise ${10+Math.random()*12}s linear infinite`;
-  s.style.animationDelay=(-Math.random()*15)+'s';
-  el.prepend(s);
- }
-}
-
 function initThemes(){
- const box=$('themes-container');box.innerHTML='';
+ const box=$('themes');box.innerHTML='';
  for(const [key,t] of Object.entries(themes)){
-  const b=document.createElement('button');
-  b.className='card tile'+(key===selectedTheme?' sel':'');
+  const b=document.createElement('button');b.className='card tile'+(key===selectedTheme?' sel':'');
   b.onclick=()=>{selectedTheme=key;savePrefs();playSound('click');initThemes()};
-  const ico=document.createElement('div');ico.className='ico';
-  ico.innerHTML=`<i class="fa-solid ${t.icon}"></i>`;
-  const txt=document.createElement('div');
-  const n=document.createElement('b');n.textContent=t.name;
-  const s=document.createElement('small');s.textContent=t.words.length+' almas';
-  txt.append(n,s);b.append(ico,txt);box.appendChild(b);
+  const ico=document.createElement('div');ico.className='ico';ico.textContent=t.icon;
+  const txt=document.createElement('div'),n=document.createElement('b'),s=document.createElement('small');
+  n.textContent=t.name;s.textContent=t.words.length+' souls';txt.append(n,s);b.append(ico,txt);box.appendChild(b);
  }
- const sel=box.querySelector('.sel');if(sel&&sel.scrollIntoView)sel.scrollIntoView({block:'nearest'});
 }
 function setTime(sec){
  gameTime=sec;savePrefs();playSound('click');
- document.querySelectorAll('.time-btn').forEach(b=>b.classList.toggle('sel',parseInt(b.dataset.time,10)===sec));
+ document.querySelectorAll('.tb').forEach(b=>b.classList.toggle('sel',+b.dataset.t===sec));
 }
-function shuffleArray(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r}
+function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r}
 
 async function startCountdown(){
  if(isCounting||isPlaying)return;
- isCounting=true;
- 
- initAudio();
- stopBGM();
- playSound('click');
-
- tiltActive=false;tiltArmed=false;
+ isCounting=true;initAudio();stopBGM();playSound('click');tiltActive=false;tiltArmed=false;
  const hint=$('hint');
- 
- let infoText='';
- if(tiltOn&&touchOn)infoText='<i class="fa-solid fa-mobile-screen"></i> Giroscópio (inclinar) ou Swipe ↓/↑ ativos';
- else if(tiltOn)infoText='<i class="fa-solid fa-mobile-screen"></i> Incline para baixo (vencer) ou cima (recuar)';
- else if(touchOn)infoText='<i class="fa-solid fa-hand-pointer"></i> Deslize ou toque para vencer / recuar';
- else infoText='<i class="fa-solid fa-triangle-exclamation"></i> Nenhum controle ativado! Use os botões da tela.';
- 
- hint.innerHTML=infoText;
-
+ hint.textContent=tiltOn&&touchOn?'Tilt your phone or swipe ↓ / ↑'
+  :tiltOn?'Tilt down to triumph, up to retreat'
+  :touchOn?'Swipe or tap to triumph / retreat'
+  :'No controls enabled! Use the on-screen buttons.';
  if(tiltOn){
-  const ok=await enableTilt();
-  tiltActive=ok;
-  if(!ok&&tiltOn){
-   hint.innerHTML+='<br><small style="color:#d9534f">Giroscópio indisponível. Usando apenas botões/toque.</small>';
-  }
+  const ok=await enableTilt();tiltActive=ok;
+  if(!ok)hint.textContent+=' — Tilt unavailable, using buttons/touch.';
  }
-
- currentWords=shuffleArray(themes[selectedTheme].words);
- currentIndex=0;scoreCorrect=0;scoreSkipped=0;streak=0;wordHistoryList=[];lastShownWord=null;
- document.body.classList.add('in-game');
- $('setup-screen').classList.add('hidden');
- const cs=$('countdown-screen');cs.classList.remove('hidden');
- let count=3;const num=$('countdown-number');num.innerText=count;playSound('beep');vibrate(30);
+ words=shuffle(themes[selectedTheme].words);idx=0;nOk=0;nSkip=0;streak=0;hist=[];lastWord=null;
+ $('setup').classList.add('hidden');
+ const cs=$('cd');cs.classList.remove('hidden');
+ let count=3;const num=$('cdn');num.textContent=count;playSound('beep');vibrate(30);
  const step=()=>{
   count--;
-  if(count>0){num.innerText=count;playSound('beep');vibrate(30)}
-  else if(count===0){num.innerText='LUTE!';playSound('start');vibrate([60,40,60])}
+  if(count>0){num.textContent=count;playSound('beep');vibrate(30)}
+  else if(count===0){num.textContent='FIGHT!';playSound('start');vibrate([60,40,60])}
   else{cs.classList.add('hidden');isCounting=false;startGame();return}
-  countdownTimeout=setTimeout(step,1000);
+  cdT=setTimeout(step,1000);
  };
- countdownTimeout=setTimeout(step,1000);
+ cdT=setTimeout(step,1000);
 }
-
 function startGame(){
- isPlaying=true;lastAction=0;tiltArmed=false;requestWakeLock();
- const gs=$('game-screen');gs.classList.remove('hidden');
- $('current-theme-label').innerText=themes[selectedTheme].name;
- $('live-score').innerText='0';$('timer-box').classList.remove('urgent');
- timeLeft=gameTime;$('timer-display').innerText=timeLeft;
- showNextWord('ok');
-
- const randomGameTrack = Math.random() < 0.5 ? 1 : 2;
- startBGM(randomGameTrack);
-
+ isPlaying=true;lastAction=0;tiltArmed=false;reqWake();
+ $('game').classList.remove('hidden');
+ $('theme-tag').textContent=themes[selectedTheme].name;
+ $('score').textContent='0';$('tbox').classList.remove('urgent');
+ timeLeft=gameTime;$('timer').textContent=timeLeft;
+ showNext('ok');
+ startBGM(Math.random()<.5?1:2);
  endTime=Date.now()+gameTime*1000;
- timerInterval=setInterval(()=>{
+ timerIv=setInterval(()=>{
   const r=Math.max(0,Math.ceil((endTime-Date.now())/1000));
-  if(r!==timeLeft){
-   timeLeft=r;$('timer-display').innerText=r;
-   if(r<=10&&r>0){$('timer-box').classList.add('urgent');playSound(r<=3?'tick3':'tick')}
-  }
+  if(r!==timeLeft){timeLeft=r;$('timer').textContent=r;if(r<=10&&r>0){$('tbox').classList.add('urgent');playSound(r<=3?'tick3':'tick')}}
   if(r<=0)endGame(true);
  },200);
 }
-function showNextWord(kind){
- if(currentIndex>=currentWords.length){
-  currentWords=shuffleArray(themes[selectedTheme].words);currentIndex=0;
-  if(currentWords.length>1&&currentWords[0]===lastShownWord)[currentWords[0],currentWords[1]]=[currentWords[1],currentWords[0]];
+function showNext(kind){
+ if(idx>=words.length){
+  words=shuffle(themes[selectedTheme].words);idx=0;
+  if(words.length>1&&words[0]===lastWord)[words[0],words[1]]=[words[1],words[0]];
  }
- lastShownWord=currentWords[currentIndex];
- const el=$('word-display');el.textContent=lastShownWord;
+ lastWord=words[idx];
+ const el=$('word');el.textContent=lastWord;
  el.classList.remove('in-ok','in-skip');void el.offsetWidth;el.classList.add(kind==='skip'?'in-skip':'in-ok');
 }
-function canAct(){
- if(!isPlaying)return false;
- const n=Date.now();if(n-lastAction<350)return false;
- lastAction=n;return true;
-}
-function flash(color){
- const f=$('flash');f.style.background=color;f.style.opacity='.5';
- setTimeout(()=>{f.style.opacity='0'},170);
-}
+function canAct(){if(!isPlaying)return false;const n=Date.now();if(n-lastAction<350)return false;lastAction=n;return true}
+function flash(c){const f=$('flash');f.style.background=c;f.style.opacity='.55';setTimeout(()=>{f.style.opacity='0'},220)}
 function feedback(text,color){
  const f=$('fb');f.textContent=text;f.style.color=color;
  f.classList.remove('show');void f.offsetWidth;f.classList.add('show');
 }
-function burst(emojis){
+function burst(em){
  for(let i=0;i<12;i++){
-  const p=document.createElement('span');p.className='part';p.textContent=emojis[i%emojis.length];
+  const p=document.createElement('span');p.className='part';p.textContent=em[i%em.length];
   const a=Math.random()*Math.PI*2,d=80+Math.random()*120;
   p.style.left='50%';p.style.top='45%';p.style.fontSize=(16+Math.random()*14)+'px';
   p.style.setProperty('--dx',Math.cos(a)*d+'px');p.style.setProperty('--dy',Math.sin(a)*d+'px');
@@ -597,93 +441,69 @@ function burst(emojis){
 }
 function handleCorrect(){
  if(!canAct())return;
- scoreCorrect++;streak++;
- wordHistoryList.push({word:currentWords[currentIndex],status:'correct'});
- $('live-score').innerText=scoreCorrect;
- const sb=$('score-box');sb.classList.remove('bump');void sb.offsetWidth;sb.classList.add('bump');
- flash('#1c593c');vibrate(40);
- if(streak>=3&&streak%3===0){playSound('combo');feedback('🔥 Lenda Viva x'+streak+'!','#f3e2c4');burst(['🔥','⚔️','✨'])}
- else{playSound('correct');feedback('Vitoria!','#73d9a6');burst(['✨','⚔️','🌟'])}
- currentIndex++;showNextWord('ok');
-}
-function handleCorrectClick(){
- if(touchOn) handleCorrect();
+ nOk++;streak++;hist.push({word:words[idx],ok:true});
+ $('score').textContent=nOk;
+ const sb=$('sbox');sb.classList.remove('bump');void sb.offsetWidth;sb.classList.add('bump');
+ flash('#8a6a2a');vibrate(40);
+ if(streak%3===0){playSound('combo');feedback(STREAK_MSG[(streak/3-1)%STREAK_MSG.length],'#f0d68a');burst(['🔥','⚔️','✨'])}
+ else{playSound('correct');feedback(OK_MSG[Math.floor(Math.random()*OK_MSG.length)],'#d9b86a');burst(['✨','🔥'])}
+ idx++;showNext('ok');
 }
 function handleSkip(){
  if(!canAct())return;
- playSound('skip');scoreSkipped++;streak=0;
- wordHistoryList.push({word:currentWords[currentIndex],status:'skipped'});
- flash('#5c221a');vibrate([30,30,30]);feedback('Recuou','#d98273');
- const g=$('game-screen');g.classList.remove('shake');void g.offsetWidth;g.classList.add('shake');
- currentIndex++;showNextWord('skip');
+ playSound('skip');nSkip++;streak=0;hist.push({word:words[idx],ok:false});
+ flash('#5a0000');vibrate([30,30,30]);feedback('YOU DIED','#b81414');
+ const g=$('game');g.classList.remove('shake');void g.offsetWidth;g.classList.add('shake');
+ idx++;showNext('skip');
 }
-
 let tY=0,tX=0;
-window.addEventListener('touchstart',e=>{
- if(!isPlaying||!touchOn)return;
- tY=e.changedTouches[0].screenY;
- tX=e.changedTouches[0].screenX;
-},{passive:true});
-
+window.addEventListener('touchstart',e=>{if(!isPlaying||!touchOn)return;tY=e.changedTouches[0].screenY;tX=e.changedTouches[0].screenX},{passive:true});
 window.addEventListener('touchend',e=>{
  if(!isPlaying||!touchOn)return;
  const dy=e.changedTouches[0].screenY-tY,dx=e.changedTouches[0].screenX-tX;
  if(Math.max(Math.abs(dx),Math.abs(dy))<40)return;
- const good=Math.abs(dy)>=Math.abs(dx)?dy>0:dx>0;
- good?handleCorrect():handleSkip();
+ const good=Math.abs(dy)>=Math.abs(dx)?dy>0:dx>0;good?handleCorrect():handleSkip();
 },{passive:true});
 
 function confetti(){
  const em=['🔥','⚔️','💀','✨','🕯️'];
  for(let i=0;i<25;i++){
-  const s=document.createElement('span');s.className='confetti';s.textContent=em[i%em.length];
+  const s=document.createElement('span');s.className='cf';s.textContent=em[i%em.length];
   s.style.left=Math.random()*96+'vw';s.style.fontSize=(18+Math.random()*16)+'px';
   s.style.animationDuration=(2.2+Math.random()*2)+'s';s.style.animationDelay=(Math.random()*.8)+'s';
   document.body.appendChild(s);setTimeout(()=>s.remove(),5400);
-}
+ }
 }
 function countUp(el,to){
- el.innerText='0';if(!to)return;
- let n=0;const step=Math.max(60,Math.min(140,900/to));
- const iv=setInterval(()=>{n++;el.innerText=n;if(n>=to)clearInterval(iv)},step);
+ el.textContent='0';if(!to)return;let n=0;
+ const iv=setInterval(()=>{n++;el.textContent=n;if(n>=to)clearInterval(iv)},Math.max(60,Math.min(140,900/to)));
 }
 function endGame(timeUp){
  if(!isPlaying)return;
- isPlaying=false;tiltArmed=false;clearInterval(timerInterval);releaseWakeLock();
- stopBGM();
- $('game-screen').classList.add('hidden');
- $('result-screen').classList.remove('hidden');
- $('res-title').innerText=scoreCorrect>=8?'VOCÊ VENCEU (YOU DIED... NOT!)':scoreCorrect>0?'A Fogueira Apagou...':'Você Morreu!';
- $('res-sub').innerText=scoreCorrect>=8?'Sua lenda ecoará entre as cinzas.':scoreCorrect>0?'Uma tentativa digna de um cavaleiro.':'Não desista, acenda a fogueira novamente.';
- countUp($('res-correct'),scoreCorrect);countUp($('res-skipped'),scoreSkipped);
- const box=$('word-history');box.innerHTML='';
- if(!wordHistoryList.length){
-  const p=document.createElement('p');p.style.cssText='text-align:center;font-size:.85rem;color:var(--muted)';
-  p.textContent='Nenhum desafio enfrentado.';box.appendChild(p);
- }else{
-  wordHistoryList.forEach((it,i)=>{
-   const ok=it.status==='correct';
-   const row=document.createElement('div');row.className='row';row.style.animationDelay=Math.min(i*40,800)+'ms';
-   const w=document.createElement('span');w.textContent=it.word;
-   const c=document.createElement('span');c.className='chip '+(ok?'ok':'no');c.textContent=ok?'Venceu':'Recuou';
-   row.append(w,c);box.appendChild(row);
-  });
- }
+ isPlaying=false;tiltArmed=false;clearInterval(timerIv);relWake();stopBGM();
+ $('game').classList.add('hidden');$('result').classList.remove('hidden');
+ const t=$('r-title');
+ t.textContent=nOk>=8?'VICTORY ACHIEVED':nOk>0?'THE FLAME FADES':'YOU DIED';
+ t.style.color=nOk>0?'':'#b81414';
+ $('r-sub').textContent=nOk>=8?'Your legend will echo through the ashes.':nOk>0?'A worthy attempt, Ashen One.':'Do not give up, Chosen Undead. Light the bonfire again.';
+ countUp($('r-ok'),nOk);countUp($('r-no'),nSkip);
+ const box=$('hist');box.innerHTML='';
+ if(!hist.length){const p=document.createElement('p');p.style.cssText='text-align:center;font-size:.85rem;color:var(--muted)';p.textContent='No challenges faced.';box.appendChild(p)}
+ else hist.forEach((it,i)=>{
+  const row=document.createElement('div');row.className='row';row.style.animationDelay=Math.min(i*40,800)+'ms';
+  const w=document.createElement('span');w.textContent=it.word;
+  const c=document.createElement('span');c.className='chip '+(it.ok?'ok':'no');c.textContent=it.ok?'FELLED':'DIED';
+  row.append(w,c);box.appendChild(row);
+ });
  if(timeUp)playSound('buzz');
- setTimeout(()=>playSound(scoreCorrect>0?'win':'lose'),timeUp?500:0);
- if(scoreCorrect>=5)confetti();
+ setTimeout(()=>playSound(nOk>0?'win':'lose'),timeUp?600:0);
+ if(nOk>=5)confetti();
 }
 function returnToMenu(){
- $('result-screen').classList.add('hidden');
- $('setup-screen').classList.remove('hidden');
- document.body.classList.remove('in-game');
- playSound('click');initThemes();
- startBGM(0);
+ $('result').classList.add('hidden');$('setup').classList.remove('hidden');
+ playSound('click');initThemes();startBGM(0);
 }
-window.onload=()=>{
- loadPrefs();refreshOpts();initThemes();setTime(gameTime);
- ['setup-screen','countdown-screen','result-screen'].forEach(id=>addEmbers($(id)));
-};
+window.onload=()=>{loadPrefs();refreshOpts();initThemes();setTime(gameTime)};
 </script>
 </body>
 </html>
