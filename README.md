@@ -2,7 +2,7 @@
 
 "The fire is fading... Put the phone on your forehead and carry the burden of fallen realms!"
 
-▶ Play now: BrowserGuessSouls
+▶ Play now: [BrowserGuessSouls](https://tmpfernando.github.io/BrowserGuessSouls/)
 
 Souls Guess is a dark, immersive guessing game (inspired by Heads Up! / Charades) themed around the Souls-like universe. Gather your friends and find out who truly knows the bosses, weapons and unforgettable characters from the masterpieces of FromSoftware.
 
