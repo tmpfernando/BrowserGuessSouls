@@ -1,87 +1,73 @@
-⚔️ Souls Guess EN
+# ⚔️ Souls Guess
 
-"The fire is fading... Put the phone on your forehead and carry the burden of fallen realms!"
+> *"The fire is fading... Put the phone on your forehead and carry the burden of fallen realms!"*
 
-Souls Guess EN is a dynamic, immersive guessing game (inspired by Heads Up! / Charades), fully themed around the Souls-like universe. Gather your friends and test who truly knows the lore, legendary bosses, enigmatic NPCs, weapons, and iconic locations from the masterpieces created by FromSoftware.
+**▶ Play now: [BrowserGuessSouls](https://tmpfernando.github.io/BrowserGuessSouls/)**
 
-💀 About the Game
+Souls Guess is a dark, immersive guessing game (inspired by *Heads Up!* / Charades) themed around the Souls-like universe. Gather your friends and find out who truly knows the bosses, weapons and unforgettable characters from the masterpieces of FromSoftware.
 
-Built with high performance and mobile responsiveness in mind, the game features a dark, gothic aesthetic, classical typography (Cinzel), and custom sound effects generated via the Web Audio API with solemn, haunting frequencies.
+## 💀 About the Game
 
-🎮 Key Features
+Built for mobile browsers, the game has a grim gothic look, classical typography (Cinzel), and a **fully synthesized orchestral soundtrack** generated in real time with the Web Audio API. There are no audio files, no images and no external assets to download.
 
-Realm-Based Categories (Games): Isolated and rich categories featuring elements faithful to the lore of each title.
+- **Bonfire (menu):** a calm, solemn theme with harp, soft choir and distant bells.
+- **In-match music:** two long, sinister tracks (roughly 1h45–2h10 of material before looping) with strings, solo violin, cello ostinato, brass, choir, timpani and tension risers. One is picked at random each match.
+- **Iconic feedback:** the screen banner shows *ENEMY FELLED* or *VICTORY ACHIEVED* when you score, escalating to *GREAT ENEMY FELLED*, *HEIR OF FIRE DESTROYED*, *PREY SLAUGHTERED* and *LORD OF CINDER FALLEN* on streaks. Skip a word and you get the classic **YOU DIED**.
 
-Multiple Control Modes:
+## 🎮 Key Features
 
-Gyroscope: Tilt your phone downward to score (Victory) or upward to skip (Dodge).
+- **Realm-based categories:** bosses and weapons grouped by game, plus an NPC pack and a mixed mode.
+- **Multiple control modes** (each can be toggled in the menu):
+  - **Tilt (gyroscope):** tilt the phone down to score, up to skip.
+  - **Touch / Swipe:** swipe down/up, or tap the word to score.
+  - **On-screen buttons:** *Triumph* (got it) and *Retreat* (skip).
+- **Responsive:** works in both portrait and landscape on any smartphone.
+- **Fullscreen mode** and **Screen Wake Lock** so the display never sleeps mid-match.
+- **Saved preferences:** realm, trial duration and toggles are remembered via `localStorage`.
+- **Chronicle of Souls:** an end-of-match recap listing every word you felled or died on.
 
-Touch / Swipe: Swipe up/down or tap the screen to register answers.
+## 📜 Available Realms
 
-Dedicated Buttons: Manual tap controls for convenience.
+| Category | Realms |
+|---|---|
+| **Bosses** | Dark Souls, Dark Souls III, Elden Ring, Bloodborne, Sekiro |
+| **Weapons** | Dark Souls, Dark Souls III, Elden Ring, Bloodborne |
+| **NPCs & Icons** | Solaire, Siegmeyer, Patches, Melina, Ranni, The Doll, and more |
+| **Mixed** | All realms combined into one chaotic pool |
 
-Fully Responsive & Optimized: Perfectly adapted for both Portrait (vertical) and Landscape (horizontal) modes on any smartphone.
+## 🚀 How to Play
 
-Native Fullscreen Mode & Wake Lock to prevent the screen from sleeping during matches.
+1. Open the game in your smartphone's browser.
+2. Place the phone on a player's forehead, screen facing the group.
+3. Choose a **Realm** and a **Trial Duration** (30s, 1:00, 1:30 or 2:00).
+4. Tap **Light the Bonfire** and wait for the countdown.
+5. Your friends give hints *without saying the word on the screen*:
+   - **Triumph (correct):** tilt the phone down, or tap / swipe down.
+   - **Retreat (skip):** tilt the phone up, or swipe up.
+6. When time runs out, review your results and pass the phone to the next Ashen One!
 
-📜 Available Realms (Themes)
+## 🛠️ Technologies Used
 
-Each category has been meticulously curated with bosses, NPCs, gear, and notable areas:
+- **HTML5 / CSS3 / Vanilla JavaScript:** a single file, lightweight and dependency-free.
+- **Web Audio API:** oscillator-based instruments (strings, brass, choir, harp, bells, timpani), a generated convolution reverb and a lookahead scheduler for the music and sound effects.
+- **DeviceOrientation, Fullscreen and Wake Lock APIs** for the in-hand experience.
+- **Google Fonts:** *Cinzel* and *Rajdhani*.
 
-Dark Souls 1 (Anor Londo, Artorias, Gwyn, Ornstein & Smough, Sif...)
+## 📦 Local Installation & Execution
 
-Dark Souls 2 (Majula, Fume Knight, Sir Alonne, King Vendrick...)
+The whole project is one standalone HTML file:
 
-Dark Souls 3 (Gael, Sister Friede, Midir, Abyss Watchers, Irithyll...)
+1. Clone or download this repository.
+2. Make sure the main file is named `index.html`.
+3. Open it in any modern browser, or serve it with a local server (e.g. VS Code Live Server).
+4. To play with friends on mobile, host it for free on GitHub Pages or Netlify.
 
-Bloodborne (Yharnam, Gehrman, Lady Maria, Ludwig, Blood Vial...)
+> **Note:** tilt controls and audio require a user interaction first, and on iOS the browser asks permission for motion sensors. Motion sensors may also require HTTPS, which GitHub Pages and Netlify provide.
 
-Elden Ring (Malenia, Radahn, Ranni, Leyndell, Rivers of Blood, Torrent...)
+## 🛡️ License
 
-Demon's Souls (Nexus, King Allant, Flamelurker, Boletaria...)
+Distributed under the **MIT License**. Feel free to modify, expand the lore and share it with the community of hunters and ashen ones!
 
-Mixed (All Realms) (A chaotic selection bringing together the best of all eras).
+---
 
-🚀 How to Play
-
-Open the game in your smartphone's browser.
-
-Place the phone on a player's forehead (screen facing the group of friends).
-
-Choose your desired Realm and Vigil Time (30s, 1m, etc.).
-
-Tap "Link the Fire" and wait for the countdown.
-
-Your friends will give hints without saying the word on the screen:
-
-Victory / Correct: Tilt the phone down (or tap/swipe down).
-
-Dodge / Skip: Tilt the phone up (or swipe up).
-
-When time runs out, review the souls you collected and pass the burden to the next player!
-
-🛠️ Technologies Used
-
-HTML5 / CSS3 / Vanilla JavaScript: Lightweight, fast, and dependency-free.
-
-Web Audio API: Native audio synthesizers for immersive sound effects without external files.
-
-Font Awesome & Google Fonts: Icons and medieval typography (Cinzel).
-
-📦 Local Installation & Execution
-
-Since the project is built as a single standalone HTML file, running it is extremely simple:
-
-Clone or download this repository.
-
-Ensure the main file is named appropriately (e.g., index.html).
-
-Open the file directly in any modern browser or use a local server extension (like VS Code's Live Server).
-
-To play with friends on mobile, host it for free on GitHub Pages or Netlify.
-
-🛡️ License
-
-Distributed under the MIT License. Feel free to modify, expand the lore, and share it with the community of hunters and ashen ones!# BrowserGuessSouls
-
-Play now [BrowserGuessSouls](https://tmpfernando.github.io/BrowserGuessSouls/)
+*Fan project. Dark Souls, Bloodborne, Elden Ring and Sekiro are trademarks of FromSoftware / Bandai Namco. Not affiliated with or endorsed by them.*
